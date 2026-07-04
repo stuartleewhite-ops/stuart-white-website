@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+@font-face{font-family:'Kensington Compressed';src:url('assets/fonts/Kensington-CompressedRegular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@media (max-width:860px){ [data-desktop-nav]{display:none !important;} [data-burger]{display:flex !important;} }
+</style>
+</helmet>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,56px);background:#0A0A0A;border-bottom:1px solid #1A1A1A;font-family:'Montserrat',sans-serif;">
+  <a href="home.dc.html" aria-label="Stuart White home" style="display:flex;align-items:center;">
+    <!-- TODO: swap for final wordmark-only logo file when supplied -->
+    <img src="assets/sw-wordmark-white.png" alt="STUARTWHITE" width="132" height="30" style="height:19px;width:auto;display:block;" />
+  </a>
+
+  <div style="display:flex;align-items:center;gap:clamp(20px,3vw,38px);" data-desktop-nav>
+    <ul style="display:flex;gap:clamp(18px,2.4vw,34px);list-style:none;margin:0;padding:0;align-items:center;">
+      <sc-for list="{{ links }}" as="link" hint-placeholder-count="4">
+        <li>
+          <a href="{{ link.href }}" style="{{ link.style }}">{{ link.label }}</a>
+        </li>
+      </sc-for>
+    </ul>
+    <a href="{{ ctaHref }}" style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#0A0A0A;background:#FFFFFF;border:1px solid #FFFFFF;padding:11px 22px;border-radius:2px;white-space:nowrap;">{{ ctaLabel }}</a>
+  </div>
+
+  <button aria-label="Open menu" onClick="{{ toggle }}" style="display:none;background:none;border:none;padding:8px;cursor:pointer;color:#FFFFFF;line-height:0;min-width:44px;min-height:44px;align-items:center;justify-content:center;" data-burger>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line><line x1="3" y1="13" x2="21" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line></svg>
+  </button>
+</nav>
+
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ close }}" style="position:fixed;inset:0;z-index:1001;background:rgba(10,10,10,0.6);" aria-hidden="true"></div>
+  <aside style="position:fixed;top:0;right:0;bottom:0;z-index:1002;width:min(320px,84vw);background:#1A1A1A;border-left:1px solid #2A2A2A;padding:22px 30px 40px;display:flex;flex-direction:column;font-family:'Montserrat',sans-serif;">
+    <button aria-label="Close menu" onClick="{{ close }}" style="align-self:flex-end;background:none;border:none;padding:8px;cursor:pointer;color:#9A9A9A;line-height:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="3" y1="3" x2="17" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line><line x1="17" y1="3" x2="3" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line></svg>
+    </button>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;flex:1;">
+      <sc-for list="{{ links }}" as="link" hint-placeholder-count="4">
+        <li><a href="{{ link.href }}" style="{{ link.drawerStyle }}">{{ link.label }}</a></li>
+      </sc-for>
+    </ul>
+    <a href="{{ ctaHref }}" style="display:block;margin-top:28px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:15px 0;text-align:center;border:1px solid #FFFFFF;color:#0A0A0A;background:#FFFFFF;border-radius:2px;">{{ ctaLabel }}</a>
+  </aside>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:64},&quot;active&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;online-coaching.dc.html&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { open: false };
+  componentDidMount() {
+    if (!window.SW_CONFIG) {
+      this._t = setInterval(() => { if (window.SW_CONFIG) { clearInterval(this._t); this.forceUpdate(); } }, 50);
+    }
+  }
+  componentWillUnmount() { if (this._t) clearInterval(this._t); }
+  renderVals() {
+    const cfg = window.SW_CONFIG || { nav: [], ctaHref: '#', ctaLabel: 'Get started' };
+    const active = this.props.active || '';
+    const base = "font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;padding-bottom:3px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;";
+    const links = (cfg.nav || []).map(l => {
+      const on = l.href === active;
+      return {
+        ...l,
+        style: base + (on ? "color:#FFFFFF;border-color:#FFFFFF;" : "color:#9A9A9A;"),
+        drawerStyle: "display:block;font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:30px;line-height:1;padding:16px 0;border-bottom:1px solid #2A2A2A;" + (on ? "color:#FFFFFF;" : "color:#9A9A9A;"),
+      };
+    });
+    return {
+      links,
+      ctaHref: cfg.ctaHref,
+      ctaLabel: cfg.ctaLabel,
+      open: this.state.open,
+      toggle: () => this.setState(s => ({ open: !s.open })),
+      close: () => this.setState({ open: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

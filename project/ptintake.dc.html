@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>New client intake — personal training & classes — Stuart White</title>
+<meta name="description" content="In-person personal training and group class intake with Stuart White. Around five minutes." />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+@font-face{font-family:'Kensington Compressed';src:url('assets/fonts/Kensington-CompressedRegular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#0A0A0A;color:#FFFFFF;font-family:'Montserrat',sans-serif;line-height:1.55;min-height:100%;}
+a{color:inherit;text-decoration:none;}
+input,select,textarea{font-family:'Montserrat',sans-serif;font-size:15px;color:#FFFFFF;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.25);padding:10px 0;outline:none;width:100%;border-radius:0;-webkit-appearance:none;appearance:none;}
+input::placeholder,textarea::placeholder{color:#9a9a9a;}
+input:focus,select:focus,textarea:focus{border-bottom-color:rgba(255,255,255,0.6);}
+textarea{min-height:100px;resize:vertical;border:1px solid rgba(255,255,255,0.25);padding:14px;border-radius:2px;}
+select option{background:#0A0A0A;color:#FFFFFF;}
+:focus-visible{outline:2px solid #FFFFFF;outline-offset:2px;}
+.pti-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:22px;}
+.pti-row.one{grid-template-columns:1fr;}
+@media (max-width:640px){.pti-row{grid-template-columns:1fr;gap:18px;}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="min-height:100vh;padding-bottom:80px;">
+  <!-- Minimal focused header -->
+  <header style="position:sticky;top:0;z-index:50;background:#0A0A0A;border-bottom:1px solid #1A1A1A;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px clamp(24px,5vw,52px);max-width:880px;margin:0 auto;">
+      <a href="home.dc.html" aria-label="Stuart White home"><img src="assets/sw-wordmark-white.png" alt="STUARTWHITE" style="height:18px;width:auto;display:block;" /></a>
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;">{{ progressLabel }}</span>
+    </div>
+    <div style="height:2px;background:#1A1A1A;"><div style="height:100%;background:#FFFFFF;width:{{ progressPct }};transition:width .35s ease-out;"></div></div>
+  </header>
+
+  <div style="max-width:720px;margin:0 auto;padding:clamp(32px,5vw,48px) clamp(24px,5vw,52px) 64px;">
+
+    <!-- INTRO -->
+    <section style="display:{{ showIntro }};">
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:18px;">Before you start</span>
+      <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(40px,5.5vw,64px);line-height:0.98;margin-bottom:18px;">New client intake.</h1>
+      <div style="font-size:15px;color:#e6e6e6;line-height:1.65;max-width:520px;">
+        <p style="margin-bottom:14px;">Around five minutes. You've already booked and paid; this just makes sure your sessions are safe and right for you from day one.</p>
+        <p style="margin-bottom:14px;">Be honest about anything that affects what's safe for you to do.</p>
+      </div>
+      <ul style="list-style:none;margin:28px 0;">
+        <li style="padding:14px 0;border-bottom:1px solid #1A1A1A;display:flex;gap:18px;align-items:baseline;font-size:14px;color:#e6e6e6;"><span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;min-width:80px;">Time</span><span>Around 5 minutes</span></li>
+        <li style="padding:14px 0;border-bottom:1px solid #1A1A1A;display:flex;gap:18px;align-items:baseline;font-size:14px;color:#e6e6e6;"><span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;min-width:80px;">Data</span><span>Handled in strict confidence</span></li>
+      </ul>
+      <div style="display:flex;justify-content:flex-end;margin-top:40px;">
+        <button type="button" onClick="{{ next }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 36px;cursor:pointer;border-radius:2px;color:#0A0A0A;background:#FFFFFF;border:1px solid #FFFFFF;">Start &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 1: ABOUT YOU -->
+    <section style="display:{{ show1 }};">
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:18px;">Section 1 of 3 · About you</span>
+      <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(36px,5vw,56px);line-height:0.98;margin-bottom:14px;">About you.</h2>
+      <p style="font-size:15px;color:#e6e6e6;margin-bottom:30px;">The basics. Two minutes.</p>
+      <div data-step-fields="1">
+        <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Full name</label><input type="text" name="name" autocomplete="name" required /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Email</label><input type="email" name="email" autocomplete="email" required /></div></div>
+        <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Phone <span style="font-size:10px;color:#9a9a9a;font-weight:400;">Optional</span></label><input type="tel" name="phone" autocomplete="tel" /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Date of birth</label><input type="date" name="dob" required /></div></div>
+        <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Gender</label><select name="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Town or city</label><input type="text" name="city" autocomplete="address-level2" required /></div></div>
+        <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Height (cm)</label><input type="number" name="height" min="120" max="230" step="1" required /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Weight (kg)</label><input type="number" name="weight" min="35" max="250" step="0.1" required /></div></div>
+      </div>
+      <p style="color:#ff6b6b;font-size:13px;margin-top:16px;display:{{ err1 }};">Please fill in all required fields.</p>
+      <div style="display:flex;justify-content:space-between;gap:16px;margin-top:44px;padding-top:28px;border-top:1px solid #1A1A1A;">
+        <button type="button" onClick="{{ prev }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 30px;cursor:pointer;border-radius:2px;color:#e6e6e6;background:transparent;border:1px solid rgba(255,255,255,0.25);">&larr; Back</button>
+        <button type="button" onClick="{{ next }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 36px;cursor:pointer;border-radius:2px;color:#0A0A0A;background:#FFFFFF;border:1px solid #FFFFFF;">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: HEALTH SCREEN -->
+    <section style="display:{{ show2 }};">
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:18px;">Section 2 of 3 · Health screen</span>
+      <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(36px,5vw,56px);line-height:0.98;margin-bottom:14px;">Health screen.</h2>
+      <p style="font-size:15px;color:#e6e6e6;margin-bottom:30px;max-width:520px;">A standard pre-exercise health check. All answers are confidential. If anything is yes, a short follow-up appears below.</p>
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <sc-for list="{{ parqQuestions }}" as="q" hint-placeholder-count="8">
+          <div>
+            <label style="font-size:13px;font-weight:500;color:#e6e6e6;display:block;margin-bottom:12px;line-height:1.5;">{{ q.text }}</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <button type="button" onClick="{{ q.setNo }}" style="{{ q.noStyle }}">No</button>
+              <button type="button" onClick="{{ q.setYes }}" style="{{ q.yesStyle }}">Yes</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:#1A1A1A;border-left:2px solid #FFFFFF;padding:24px;margin-top:24px;display:{{ showFollowup }};">
+        <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Follow-up</span>
+        <p style="font-size:13px;color:#9a9a9a;margin-bottom:22px;line-height:1.6;">You ticked yes to one or more questions. A bit more detail helps me keep you safe.</p>
+        <div class="pti-row one" style="margin-bottom:18px;"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">GP clearance status</label><select name="gpClearance"><option value="">Select</option><option>Clearance obtained, I have written confirmation</option><option>Clearance pending, I have contacted my GP</option><option>Not yet sought</option></select></div></div>
+        <div class="pti-row one" style="margin-bottom:18px;"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Injuries relevant to training</label><textarea name="injuries"></textarea></div></div>
+        <div class="pti-row one"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Medications or other conditions <span style="font-size:10px;color:#9a9a9a;font-weight:400;">If applicable</span></label><textarea name="conditions"></textarea></div></div>
+      </div>
+      <p style="color:#ff6b6b;font-size:13px;margin-top:16px;display:{{ err2 }};">Please answer all eight screening questions.</p>
+      <div style="display:flex;justify-content:space-between;gap:16px;margin-top:44px;padding-top:28px;border-top:1px solid #1A1A1A;">
+        <button type="button" onClick="{{ prev }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 30px;cursor:pointer;border-radius:2px;color:#e6e6e6;background:transparent;border:1px solid rgba(255,255,255,0.25);">&larr; Back</button>
+        <button type="button" onClick="{{ next }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 36px;cursor:pointer;border-radius:2px;color:#0A0A0A;background:#FFFFFF;border:1px solid #FFFFFF;">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: SIGN AND SEND -->
+    <section style="display:{{ show3 }};">
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:18px;">Section 3 of 3 · Sign and send</span>
+      <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(36px,5vw,56px);line-height:0.98;margin-bottom:14px;">Agreement and consent.</h2>
+      <p style="font-size:15px;color:#e6e6e6;margin-bottom:24px;">Read this, sign at the bottom, send. Last step.</p>
+      <div style="background:#1A1A1A;padding:26px;border-radius:2px;max-height:340px;overflow-y:auto;font-size:13px;color:#e6e6e6;line-height:1.65;margin-bottom:24px;">
+        <sc-for list="{{ agreement }}" as="a" hint-placeholder-count="7">
+          <h4 style="font-size:13px;font-weight:600;color:#FFFFFF;margin:16px 0 8px;">{{ a.h }}</h4>
+          <p style="margin-bottom:10px;">{{ a.p }}</p>
+        </sc-for>
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:12px;border:1px solid rgba(255,255,255,0.25);padding:14px;border-radius:2px;cursor:pointer;margin-bottom:22px;font-size:14px;color:#e6e6e6;">
+        <input type="checkbox" checked="{{ agreed }}" onChange="{{ toggleAgree }}" style="width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:#FFFFFF;" />
+        <span>I have read and understood this agreement and I am entering into this programme voluntarily.</span>
+      </label>
+      <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Full name (as signature)</label><input type="text" name="signatureName" required /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Date</label><input type="date" name="signatureDate" required /></div></div>
+      <div class="pti-row one"><div>
+        <label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Signature</label>
+        <div style="background:#FFFFFF;border-radius:2px;"><canvas ref="{{ sigRef }}" width="600" height="180" style="display:block;width:100%;height:180px;touch-action:none;border-radius:2px;"></canvas></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px;">
+          <span style="font-size:12px;color:#9a9a9a;">Draw your signature with your mouse or finger.</span>
+          <button type="button" onClick="{{ clearSig }}" style="background:transparent;border:1px solid rgba(255,255,255,0.25);color:#e6e6e6;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:8px 14px;cursor:pointer;border-radius:2px;">Clear</button>
+        </div>
+      </div></div>
+      <p style="color:#ff6b6b;font-size:13px;margin-top:16px;display:{{ err3 }};">Please tick the agreement, add your name, date and signature.</p>
+      <div style="display:flex;justify-content:space-between;gap:16px;margin-top:44px;padding-top:28px;border-top:1px solid #1A1A1A;">
+        <button type="button" onClick="{{ prev }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 30px;cursor:pointer;border-radius:2px;color:#e6e6e6;background:transparent;border:1px solid rgba(255,255,255,0.25);">&larr; Back</button>
+        <button type="button" onClick="{{ submit }}" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:16px 36px;cursor:pointer;border-radius:2px;color:#0A0A0A;background:#FFFFFF;border:1px solid #FFFFFF;">Submit form</button>
+      </div>
+    </section>
+
+    <!-- DONE -->
+    <section style="display:{{ showDone }};">
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:18px;">Confirmation</span>
+      <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(44px,6vw,72px);line-height:1;margin-bottom:20px;">Thanks. I've got everything I need.</h2>
+      <div style="font-size:15px;color:#e6e6e6;line-height:1.7;max-width:520px;">
+        <p style="margin-bottom:14px;">I'll be in touch shortly to confirm your first session or class.</p>
+        <p style="margin-bottom:14px;">If anything urgent comes up in the meantime, email <a href="mailto:hello@stuart-white.co.uk" style="border-bottom:1px solid #6B6B6B;">hello@stuart-white.co.uk</a>.</p>
+        <p><a href="home.dc.html" style="border-bottom:1px solid #6B6B6B;">Back to the site &rarr;</a></p>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { step: 0, parq: {}, agreed: false, errors: {}, hasSig: false };
+
+  next() {
+    const s = this.state.step;
+    if (s === 0) return this.setState({ step: 1 });
+    if (s === 1) {
+      if (!this._stepValid(1)) return this._err(1);
+      return this.setState({ step: 2, errors: {} });
+    }
+    if (s === 2) {
+      const answered = [1,2,3,4,5,6,7,8].every(i => this.state.parq[i]);
+      if (!answered) return this._err(2);
+      return this.setState({ step: 3, errors: {} });
+    }
+  }
+  submit() {
+    if (!this._stepValid(3) || !this.state.agreed || !this.state.hasSig) return this._err(3);
+    this.setState({ step: 4, errors: {} });
+    if (this._root) this._root.scrollIntoView ? window.scrollTo(0,0) : null;
+    window.scrollTo(0, 0);
+  }
+  prev() { this.setState(st => ({ step: Math.max(0, st.step - 1), errors: {} })); }
+  _err(n) { this.setState(st => ({ errors: { ...st.errors, [n]: true } })); }
+  _stepValid(n) {
+    const root = this._root; if (!root) return true;
+    if (n === 1) {
+      const wrap = root.querySelector('[data-step-fields="1"]');
+      if (!wrap) return true;
+      return [...wrap.querySelectorAll('[required]')].every(el => (el.value || '').trim() !== '');
+    }
+    if (n === 3) {
+      const name = root.querySelector('[name="signatureName"]');
+      const date = root.querySelector('[name="signatureDate"]');
+      return !!(name && name.value.trim() && date && date.value.trim());
+    }
+    return true;
+  }
+
+  // signature pad
+  setSigRef(el) {
+    if (!el || el === this._canvas) return;
+    this._canvas = el;
+    const ctx = el.getContext('2d');
+    ctx.strokeStyle = '#0A0A0A'; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    let drawing = false;
+    const pos = (e) => { const r = el.getBoundingClientRect(); const p = e.touches ? e.touches[0] : e; return { x: (p.clientX - r.left) * (el.width / r.width), y: (p.clientY - r.top) * (el.height / r.height) }; };
+    const start = (e) => { e.preventDefault(); drawing = true; const {x,y} = pos(e); ctx.beginPath(); ctx.moveTo(x,y); };
+    const move = (e) => { if (!drawing) return; e.preventDefault(); const {x,y} = pos(e); ctx.lineTo(x,y); ctx.stroke(); if (!this.state.hasSig) this.setState({ hasSig: true }); };
+    const end = () => { drawing = false; };
+    el.addEventListener('pointerdown', start); el.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', end);
+    this._sigCleanup = () => { window.removeEventListener('pointerup', end); };
+  }
+  clearSig() { if (this._canvas) { const c = this._canvas; c.getContext('2d').clearRect(0,0,c.width,c.height); } this.setState({ hasSig: false }); }
+  componentWillUnmount() { if (this._sigCleanup) this._sigCleanup(); }
+
+  renderVals() {
+    const step = this.state.step;
+    const parq = this.state.parq;
+    const show = (n) => step === n ? 'block' : 'none';
+    const tileBase = "font-size:14px;padding:14px 18px;cursor:pointer;border-radius:2px;text-align:center;transition:all .12s;";
+    const on = "background:#FFFFFF;color:#0A0A0A;border:1px solid #FFFFFF;";
+    const off = "background:transparent;color:#e6e6e6;border:1px solid rgba(255,255,255,0.25);";
+    const qtext = [
+      "1. Has your doctor ever said that you have a heart condition, and that you should only do physical activity recommended by a doctor?",
+      "2. Do you feel pain in your chest when you do physical activity?",
+      "3. In the past month, have you had chest pain when you were not doing physical activity?",
+      "4. Do you lose your balance because of dizziness, or do you ever lose consciousness?",
+      "5. Do you have a bone or joint problem that could be made worse by a change in your physical activity?",
+      "6. Is your doctor currently prescribing drugs for your blood pressure or heart condition?",
+      "7. Do you know of any other reason why you should not do physical activity?",
+      "8. Are you currently pregnant or have you given birth in the last 12 months?",
+    ];
+    const parqQuestions = qtext.map((text, idx) => {
+      const i = idx + 1;
+      return {
+        text,
+        noStyle: tileBase + (parq[i] === 'No' ? on : off),
+        yesStyle: tileBase + (parq[i] === 'Yes' ? on : off),
+        setNo: () => this.setState(st => ({ parq: { ...st.parq, [i]: 'No' } })),
+        setYes: () => this.setState(st => ({ parq: { ...st.parq, [i]: 'Yes' } })),
+      };
+    });
+    const anyYes = Object.values(parq).includes('Yes');
+    const pct = step <= 0 ? '0%' : step >= 4 ? '100%' : (Math.round((step / 3) * 100) + '%');
+    const labels = { 0: 'New client intake', 1: 'Section 1 of 3 · About you', 2: 'Section 2 of 3 · Health screen', 3: 'Section 3 of 3 · Sign and send', 4: 'Complete' };
+    return {
+      progressLabel: labels[step], progressPct: pct,
+      showIntro: show(0), show1: show(1), show2: show(2), show3: show(3), showDone: show(4),
+      showFollowup: anyYes ? 'block' : 'none',
+      err1: this.state.errors[1] ? 'block' : 'none',
+      err2: this.state.errors[2] ? 'block' : 'none',
+      err3: this.state.errors[3] ? 'block' : 'none',
+      parqQuestions,
+      agreed: this.state.agreed,
+      agreement: window.__PTI_AGREEMENT || [],
+      next: () => this.next(), prev: () => this.prev(), submit: () => this.submit(),
+      toggleAgree: (e) => this.setState({ agreed: e.target.checked }),
+      rootRef: (el) => { if (el) this._root = el; },
+      sigRef: (el) => { this.setSigRef(el); },
+      clearSig: () => this.clearSig(),
+    };
+  }
+}
+window.__PTI_AGREEMENT = [
+  { h: "1. What you are signing up for", p: "A one-to-one coaching arrangement with Stuart White, sole trader, delivered in person. The aim is to help you make sustainable improvements to your fitness. Stuart is qualified at Level 3 in Personal Training and Level 4 in Nutrition. He is not a medical doctor, registered dietitian, physiotherapist or psychologist." },
+  { h: "2. What is in scope, what is not", p: "In scope: exercise programme design, goal setting and review, resistance and cardiovascular training guidance, movement and technique instruction, training load management, recovery guidance and accountability. Out of scope: diagnosis or treatment of any injury or medical condition, physiotherapy or rehabilitation, manual therapy, prescription of any drug. If anything suggests a clinical issue, Stuart will refer you to your GP or a specialist before continuing." },
+  { h: "3. Your responsibilities", p: "Tell Stuart about any medical conditions, injuries, surgeries, medications or allergies that could affect what is safe for you to do. Complete the health screen honestly. If any question flags a concern, get medical clearance from your GP before training. Tell Stuart if anything material changes." },
+  { h: "4. How your data is handled", p: "Stuart is the data controller for the information you share. It is stored on UK or EU-based services and used only to deliver your coaching. It will not be shared without your written consent, except where required by law or where there is a credible risk to your safety. You can see, correct or delete your data any time by emailing hello@stuart-white.co.uk." },
+  { h: "5. Photos, measurements and progress data", p: "Some clients want measurements, weigh-ins or progress photos; some do not. Both are fine. Nothing is collected without your active consent and nothing is used publicly without your permission." },
+  { h: "6. Cancellation and changes", p: "A session can be cancelled with 24 hours' notice at no charge. Email hello@stuart-white.co.uk to do so. If you cancel after that you will still be charged." },
+  { h: "7. Liability", p: "Exercise carries inherent physical risk. You are responsible for performing exercises safely, within your own limits, and in line with any medical advice you have received. Stuart is not liable for outcomes resulting from incomplete or inaccurate information you provided, or from the inherent risk of exercise. This does not exclude any liability that cannot be excluded under UK law." },
+];
+</script>
+</body>
+</html>
