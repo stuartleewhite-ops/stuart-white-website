@@ -39,6 +39,8 @@ const services = [
 >
   <Fragment slot="head">
     <style>
+      .desktop-break { display: none; }
+      @media (min-width: 901px) { .desktop-break { display: inline; } }
       .sw-svc-card:hover { background: #FAFAFA; }
       .sw-btn-dark:hover { background: #1A1A1A; }
       .sw-btn-light:hover { background: #E6E6E6; }
@@ -66,7 +68,7 @@ const services = [
       <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:240px;z-index:1;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"></div>
       <div data-fade style="position:relative;z-index:2;max-width:760px;">
         <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A9A;margin-bottom:24px;">Fitness · Nutrition · Sleep</span>
-        <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(52px,9vw,104px);line-height:0.95;margin:0 0 24px;color:#FFFFFF;">Build a fitter, stronger, healthier you.</h1>
+        <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(52px,9vw,104px);line-height:0.95;margin:0 0 24px;color:#FFFFFF;">Build a fitter, stronger, <br class="desktop-break" />healthier you.</h1>
         <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:#E6E6E6;max-width:540px;margin:0 0 36px;">Fitness, nutrition and sleep coaching built around the life you actually have. Online, one to one in person, or in a weekly group class. Pick the way in that fits.</p>
         <a href="#three-ways-in" class="sw-btn-light" style="display:inline-block;background:#FFFFFF;color:#0A0A0A;border:1px solid #FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:16px 40px;border-radius:2px;transition:background .15s;">Find your fit</a>
       </div>

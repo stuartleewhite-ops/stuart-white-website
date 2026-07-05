@@ -35,6 +35,8 @@ const steps = [
 >
   <Fragment slot="head">
     <style>
+      .desktop-break { display: none; }
+      @media (min-width: 901px) { .desktop-break { display: inline; } }
       .oc-btn-light:hover { background: #FFFFFF; }
       .oc-btn-dark:hover { background: #1A1A1A; }
       .oc-textlink:hover { border-color: currentColor !important; }
@@ -58,7 +60,7 @@ const steps = [
       <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:220px;z-index:1;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"></div>
       <div style="position:relative;z-index:2;max-width:740px;color:#FFFFFF;">
         <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A9A;margin-bottom:22px;">Online coaching</span>
-        <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(48px,8vw,96px);line-height:0.95;margin:0 0 22px;">Build a fitter, stronger, healthier you in 90 days.</h1>
+        <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(48px,8vw,96px);line-height:0.95;margin:0 0 22px;">Build a fitter, stronger, <br class="desktop-break" />healthier you in 90 days.</h1>
         <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:#E6E6E6;max-width:520px;margin:0 0 20px;">Your body responds to how you train, eat and sleep. The hard part is making it work around a schedule that doesn't leave much room. That's what I do, wherever you are, for £35 a week.</p>
         <p style="font-size:13px;color:#9A9A9A;margin:0 0 34px;">First week free · No contract · Cancel any time</p>
         <a href={INTAKE_URL} class="oc-btn-light" style="display:inline-block;background:#FFFFFF;color:#0A0A0A;border:1px solid #FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:16px 40px;border-radius:2px;transition:background .15s;">Start free trial</a>
