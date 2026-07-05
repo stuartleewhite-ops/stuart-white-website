@@ -109,7 +109,7 @@ import SiteNav from '../components/SiteNav.astro';
       .form-error.visible { display: block; }
       .confirm-headline { font-family: 'Kensington Compressed', 'Arial Narrow', sans-serif; font-size: clamp(44px, 6vw, 72px); font-weight: 400; line-height: 1.0; margin-bottom: 20px; }
       .confirm-body p { margin-bottom: 14px; color: var(--text-body); font-size: 15px; line-height: 1.7; }
-      .hp-field { position: absolute; left: -9999px; top: -9999px; }
+      .hp-field { display: none; }
       @media (max-width: 768px) {
         .page { padding: 32px 24px 48px; }
         .progress-header-inner { padding: 10px 24px; }
@@ -646,7 +646,9 @@ import SiteNav from '../components/SiteNav.astro';
         window.addEventListener('resize', function () { self.resize(); });
       }
       SignaturePad.prototype.resize = function (this: any) {
-        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        // Capped at 2x to keep the exported PNG well under Netlify Forms'
+        // submission size limit on very high-DPI phones.
+        var ratio = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
         var w = this.canvas.offsetWidth;
         if (w === 0) return;
         var h = 200;

@@ -57,11 +57,14 @@ import { SITE } from '../lib/site-config';
 
     // Scoped to the whole document, not just #ptd_portal: on mobile this widget
     // sometimes renders its "Powered by" badge as a fixed bar appended directly
-    // to <body>, outside the portal container.
+    // to <body>, outside the portal container. Only ever hides leaf elements
+    // (no child elements of their own) so a loading-state wrapper that later
+    // fills with the real login form can never get caught and hidden whole.
     const hideBranding = () => {
       document.querySelectorAll('body *').forEach((el) => {
+        if (el.children.length > 0) return;
         const text = (el.textContent || '').trim();
-        if (text.length < 60 && /powered by/i.test(text)) {
+        if (text.length > 0 && text.length < 50 && /powered by/i.test(text)) {
           (el as HTMLElement).style.setProperty('display', 'none', 'important');
         }
       });

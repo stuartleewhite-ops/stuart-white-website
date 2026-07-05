@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
 
 const agreement = [
   { h: '1. What you are signing up for', p: 'A one-to-one coaching arrangement with Stuart White, sole trader, delivered in person. The aim is to help you make sustainable improvements to your fitness. Stuart is qualified at Level 3 in Personal Training and Level 4 in Nutrition. He is not a medical doctor, registered dietitian, physiotherapist or psychologist.' },
@@ -31,23 +32,24 @@ const parqText = [
     <style>
       html, body { line-height: 1.55; min-height: 100%; }
       body { padding-bottom: 80px; }
-      input, select, textarea {
+      input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
         font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF;
         background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.25);
         padding: 10px 0; outline: none; width: 100%; border-radius: 0;
         -webkit-appearance: none; appearance: none;
       }
       input::placeholder, textarea::placeholder { color: #9a9a9a; }
-      input:focus, select:focus, textarea:focus { border-bottom-color: rgba(255,255,255,0.6); }
+      input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="date"]:focus, input[type="time"]:focus, input[type="number"]:focus, select:focus, textarea:focus { border-bottom-color: rgba(255,255,255,0.6); }
       textarea { min-height: 100px; resize: vertical; border: 1px solid rgba(255,255,255,0.25); padding: 14px; border-radius: 2px; }
       select option { background: #0A0A0A; color: #FFFFFF; }
       .pti-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 22px; }
       .pti-row.one { grid-template-columns: 1fr; }
       @media (max-width: 640px) { .pti-row { grid-template-columns: 1fr; gap: 18px; } }
-      .pti-shell { min-height: 100vh; padding-bottom: 80px; }
-      .pti-header { position: sticky; top: 0; z-index: 50; background: #0A0A0A; border-bottom: 1px solid #1A1A1A; }
-      .pti-header-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(24px,5vw,52px); max-width: 880px; margin: 0 auto; }
+      .pti-shell { min-height: 100vh; padding-bottom: 80px; padding-top: 64px; }
+      .pti-header { position: sticky; top: 64px; z-index: 900; background: #0A0A0A; border-bottom: 1px solid #1A1A1A; }
+      .pti-header-inner { display: flex; align-items: center; justify-content: flex-end; padding: 12px clamp(24px,5vw,52px); max-width: 880px; margin: 0 auto; }
       .pti-progress-track { height: 2px; background: #1A1A1A; }
+      input, select, textarea, .pti-tile { scroll-margin-top: 116px; }
       .pti-progress-fill { height: 100%; background: #FFFFFF; width: 0%; transition: width .35s ease-out; }
       .pti-page { max-width: 720px; margin: 0 auto; padding: clamp(32px,5vw,48px) clamp(24px,5vw,52px) 64px; }
       .pti-step { display: none; }
@@ -67,14 +69,15 @@ const parqText = [
       .pti-agreement { background: #1A1A1A; padding: 26px; border-radius: 2px; max-height: 340px; overflow-y: auto; font-size: 13px; color: #e6e6e6; line-height: 1.65; margin-bottom: 24px; }
       .pti-agreement h4 { font-size: 13px; font-weight: 600; color: #FFFFFF; margin: 16px 0 8px; }
       .pti-agreement h4:first-child { margin-top: 0; }
-      .hp-field { position: absolute; left: -9999px; top: -9999px; }
+      .hp-field { display: none; }
     </style>
   </Fragment>
+
+  <SiteNav active="" />
 
   <div class="pti-shell">
     <header class="pti-header">
       <div class="pti-header-inner">
-        <a href="/" aria-label="Stuart White home"><img src="/images/sw-wordmark-white.png" alt="STUARTWHITE" style="height:18px;width:auto;display:block;" /></a>
         <span id="pti-progress-meta" style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;">New client intake</span>
       </div>
       <div class="pti-progress-track"><div class="pti-progress-fill" id="pti-progress-fill"></div></div>
@@ -192,6 +195,7 @@ const parqText = [
       var STEP_ORDER = ['intro', '1', '2', '3', 'done'];
       var currentStep = 'intro';
       var sigCanvas: HTMLCanvasElement, sigCtx: CanvasRenderingContext2D, sigHasInk = false, sigDrawing = false, sigLast: { x: number; y: number } | null = null;
+      var sigResize: () => void = () => {};
 
       function $(s: string) { return document.querySelector(s); }
       function $$(s: string, ctx?: ParentNode) { return Array.from((ctx || document).querySelectorAll(s)); }
@@ -203,6 +207,7 @@ const parqText = [
         if (el) el.classList.add('active');
         updateProgress();
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (id === '3') requestAnimationFrame(() => sigResize());
       }
 
       function updateProgress() {
@@ -269,16 +274,30 @@ const parqText = [
         sigCanvas = $('#pti-sig-pad') as HTMLCanvasElement;
         sigCtx = sigCanvas.getContext('2d')!;
         function resize() {
-          var ratio = Math.max(window.devicePixelRatio || 1, 1);
+          // Capped at 2x: plenty crisp for a signature, keeps the exported
+          // PNG well under Netlify Forms' submission size limit on very
+          // high-DPI phones. Resizing a canvas clears it, so any existing
+          // signature is captured first and redrawn afterwards; without
+          // this, a resize triggered by things mobile browsers do constantly
+          // (address bar collapsing on scroll, keyboard opening/closing)
+          // would silently wipe a client's signature after they'd drawn it.
+          var ratio = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
           var w = sigCanvas.offsetWidth, h = 180;
           if (w === 0) return;
+          var existing = sigHasInk ? sigCanvas.toDataURL() : null;
           sigCanvas.width = w * ratio;
           sigCanvas.height = h * ratio;
           sigCtx.setTransform(1, 0, 0, 1, 0, 0);
           sigCtx.scale(ratio, ratio);
           sigCtx.lineCap = 'round'; sigCtx.lineJoin = 'round'; sigCtx.lineWidth = 2; sigCtx.strokeStyle = '#0A0A0A';
           sigCtx.fillStyle = '#FFFFFF'; sigCtx.fillRect(0, 0, w, h);
+          if (existing) {
+            var img = new Image();
+            img.onload = () => sigCtx.drawImage(img, 0, 0, w, h);
+            img.src = existing;
+          }
         }
+        sigResize = resize;
         function point(e: any) {
           var rect = sigCanvas.getBoundingClientRect();
           var t = e.touches && e.touches[0] ? e.touches[0] : e;
