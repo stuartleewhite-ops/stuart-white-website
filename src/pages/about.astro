@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const credentials = [
+  'Qualified Personal Trainer',
+  'Qualified Nutritionist',
+  'Certificate in Executive Coaching Skills',
+  'First Class degree in Management',
+];
+
+const pillars = [
+  { title: 'Train', body: "Your body responds to how you train; it's the stimulus for change. Every plan is built for you, your capability and the kit you can get to." },
+  { title: 'Eat', body: 'Your body responds to what you eat; it\'s the fuel for change. Nutrition is personalised to your habits, your preferences and your goals.' },
+  { title: 'Sleep', body: "Your body responds to how you sleep; it's the time for change. We use your data, not guesswork, to make small changes that add up." },
+  { title: 'Repeat', body: 'Consistency wins. Daily, over decades. We build habits and discipline you can keep for the rest of your life.' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Stuart White',
+  jobTitle: 'Fitness, Nutrition and Sleep Coach',
+  description: 'Qualified personal trainer and nutritionist with 20 years in senior corporate roles.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Whickham',
+    addressRegion: 'Tyne and Wear',
+    addressCountry: 'GB',
+  },
+};
+---
+<BaseLayout
+  title="About Stuart White — coach, and 20 years in the busy life"
+  description="20 years in senior corporate roles and 20 years of training without missing a week. Qualified PT and nutritionist, executive coaching certified, first class degree. This is who I am and how I think about performance."
+  bg="#FFFFFF"
+  structuredData={structuredData}
+>
+  <Fragment slot="head">
+    <style>
+      .ab-btn-dark:hover { background: #1A1A1A; }
+      .ab-btn-light:hover { background: #FFFFFF; }
+      .ab-textlink:hover { border-color: currentColor !important; }
+      @media (max-width: 900px) {
+        [data-two] { grid-template-columns: 1fr !important; }
+        [data-pillars] { grid-template-columns: 1fr 1fr !important; }
+        [data-cred] { grid-template-columns: 1fr !important; }
+      }
+      @media (max-width: 560px) { [data-pillars] { grid-template-columns: 1fr !important; } }
+    </style>
+  </Fragment>
+
+  <div style="font-family:'Montserrat',sans-serif;background:#FFFFFF;color:#0A0A0A;">
+    <SiteNav active="/about" />
+
+    <!-- HERO -->
+    <section style="position:relative;padding:calc(64px + clamp(48px,8vh,96px)) clamp(24px,6vw,80px) clamp(48px,7vw,88px);background:#0A0A0A;color:#FFFFFF;overflow:hidden;">
+      <div data-two style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.15fr 0.85fr;gap:clamp(32px,5vw,72px);align-items:end;">
+        <div>
+          <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A9A;margin-bottom:22px;">About</span>
+          <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(52px,8vw,96px);line-height:0.95;margin:0 0 22px;">Who I am.</h1>
+          <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.6;color:#CCCCCC;max-width:520px;margin:0;">I'm Stuart. I spent 20 years in senior corporate roles and 20 years training around them, without missing a week. I coach the life I've lived.</p>
+        </div>
+        <img src="/images/raw/headshot.png" alt="Stuart White in his gym" style="width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;filter:grayscale(1) contrast(1.05);display:block;" fetchpriority="high" />
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section style="padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:32px;">The short version</span>
+        <div data-two style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:clamp(32px,5vw,72px);align-items:start;">
+          <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(30px,4vw,50px);line-height:1;margin:0;">I know the pressure, because I've worked under it.</h2>
+          <div>
+            <p style="font-size:17px;line-height:1.65;color:#333333;margin:0 0 18px;">For two decades I built and led teams inside big businesses. Long days, constant travel, eating between meetings. Through all of it I kept training; early mornings, hotel gyms, whatever the week allowed.</p>
+            <p style="font-size:17px;line-height:1.65;color:#333333;margin:0 0 18px;">That's the difference. I'm not coaching from a textbook. I've had to make training, eating and sleeping work inside a full, demanding life, and I've done it for 20 years.</p>
+            <p style="font-size:17px;line-height:1.65;color:#333333;margin:0;">Now I help other busy people do the same, whether that's online, one to one, or in a class on a Wednesday night.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENTIALS & EXPERIENCE (dark) -->
+    <section style="background:#0A0A0A;color:#FFFFFF;padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9A9A;margin-bottom:40px;">Credentials and personal experience</span>
+        <div data-cred style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);">
+          <div>
+            <h3 style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;margin:0 0 20px;">Qualified</h3>
+            <ul style="list-style:none;margin:0;padding:0;border-top:1px solid #1A1A1A;">
+              {credentials.map((c) => (
+                <li style="padding:16px 0;border-bottom:1px solid #1A1A1A;font-size:16px;color:#E6E6E6;">{c}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;margin:0 0 20px;">Competed</h3>
+            <p style="font-size:17px;line-height:1.7;color:#CCCCCC;margin:0 0 18px;">I don't just prescribe hard training; I do it. Over the years that's meant CrossFit, Hyrox, Europe's Toughest Mudder, ultramarathons, Olympic weightlifting and powerlifting.</p>
+            <p style="font-size:17px;line-height:1.7;color:#CCCCCC;margin:0;">I've been a beginner at every one of them. I know what it feels like to start something you're bad at and stick with it until you're not.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE -->
+    <section style="padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:32px;">Professional experience</span>
+        <div data-two style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:clamp(32px,5vw,72px);align-items:center;">
+          <div>
+            <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(30px,4vw,50px);line-height:1;margin:0 0 22px;">20 years leading in demanding businesses.</h2>
+            <p style="font-size:17px;line-height:1.65;color:#333333;margin:0 0 18px;">I've held senior roles at Johnson &amp; Johnson, L'Oréal, Perrigo, Weetabix and Tommee Tippee. I was Global Head of Sleep at Tommee Tippee, Head of Innovation at Weetabix, and I built a Men's Health vitamin range from the ground up.</p>
+            <p style="font-size:17px;line-height:1.65;color:#333333;margin:0;">That world taught me how to turn evidence into something practical, how to build habits that survive a real schedule, and how to keep going when it would be easier to stop. It's exactly what coaching needs.</p>
+          </div>
+          <img src="/images/raw/suit-1.jpg" alt="Fastening a suit jacket, motion-blurred" style="width:100%;aspect-ratio:3/4;object-fit:cover;filter:grayscale(1) contrast(1.06);display:block;" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW I THINK ABOUT PERFORMANCE (dark) -->
+    <section style="background:#0A0A0A;color:#FFFFFF;padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9A9A;margin-bottom:20px;">How I think about performance</span>
+        <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(34px,5vw,60px);line-height:1;margin:0 0 52px;max-width:560px;">Train. Eat. Sleep. Repeat.</h2>
+        <div data-pillars style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#2A2A2A;border:1px solid #2A2A2A;">
+          {pillars.map((p) => (
+            <div style="background:#0A0A0A;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;">
+              <h3 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:34px;line-height:1;margin:0;">{p.title}</h3>
+              <p style="font-size:14px;line-height:1.65;color:#9A9A9A;margin:0;">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING CTA -->
+    <section style="background:#FFFFFF;color:#0A0A0A;padding:clamp(72px,10vw,128px) clamp(24px,6vw,80px);text-align:center;">
+      <div style="max-width:720px;margin:0 auto;">
+        <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(36px,5.5vw,64px);line-height:0.98;margin:0 0 20px;">Want to know if I can help?</h2>
+        <p style="font-size:17px;line-height:1.6;color:#6B6B6B;max-width:480px;margin:0 auto 36px;">A free 15-minute call. You tell me where you're at, I'll tell you honestly which option fits, or whether none of them do.</p>
+        <a href="/book-a-call" class="ab-btn-dark" style="display:inline-block;background:#0A0A0A;color:#FFFFFF;border:1px solid #0A0A0A;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:16px 44px;border-radius:2px;transition:background .15s;">Book a free 15-minute call</a>
+      </div>
+    </section>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

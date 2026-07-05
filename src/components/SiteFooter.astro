@@ -1,0 +1,32 @@
+---
+import { NAV_LINKS, SITE } from '../lib/site-config';
+---
+<footer style="background:#0A0A0A;border-top:1px solid #1A1A1A;padding:56px clamp(20px,5vw,64px) 40px;font-family:'Montserrat',sans-serif;">
+  <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-start;">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <a href="/" aria-label="Stuart White home">
+        <!-- TODO: swap for final wordmark-only logo file when supplied -->
+        <img src="/images/sw-wordmark-white.png" alt="STUARTWHITE" width="150" height="34" style="height:22px;width:auto;display:block;" />
+      </a>
+      <a href={`mailto:${SITE.email}`} style="font-size:13px;color:#9A9A9A;">{SITE.email}</a>
+    </div>
+
+    <nav aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:40px;">
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;">
+        {NAV_LINKS.map((l) => (
+          <li><a href={l.href} style="font-size:12px;letter-spacing:0.04em;color:#9A9A9A;">{l.label}</a></li>
+        ))}
+      </ul>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;">
+        <li><a href="/client-login" style="font-size:12px;letter-spacing:0.04em;color:#9A9A9A;">Client login</a></li>
+        <li><a href="/newsletter" style="font-size:12px;letter-spacing:0.04em;color:#9A9A9A;">Newsletter</a></li>
+        <li><a href="/book-a-call" style="font-size:12px;letter-spacing:0.04em;color:#9A9A9A;">Book a free call</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div style="max-width:1180px;margin:44px auto 0;padding-top:22px;border-top:1px solid #1A1A1A;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;">
+    <span style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6B6B;">Fitness · Nutrition · Sleep</span>
+    <span style="font-size:12px;color:#6B6B6B;">© {SITE.year} Stuart White</span>
+  </div>
+</footer>

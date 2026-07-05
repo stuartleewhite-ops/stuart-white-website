@@ -1,0 +1,369 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const agreement = [
+  { h: '1. What you are signing up for', p: 'A one-to-one coaching arrangement with Stuart White, sole trader, delivered in person. The aim is to help you make sustainable improvements to your fitness. Stuart is qualified at Level 3 in Personal Training and Level 4 in Nutrition. He is not a medical doctor, registered dietitian, physiotherapist or psychologist.' },
+  { h: '2. What is in scope, what is not', p: 'In scope: exercise programme design, goal setting and review, resistance and cardiovascular training guidance, movement and technique instruction, training load management, recovery guidance and accountability. Out of scope: diagnosis or treatment of any injury or medical condition, physiotherapy or rehabilitation, manual therapy, prescription of any drug. If anything suggests a clinical issue, Stuart will refer you to your GP or a specialist before continuing.' },
+  { h: '3. Your responsibilities', p: 'Tell Stuart about any medical conditions, injuries, surgeries, medications or allergies that could affect what is safe for you to do. Complete the health screen honestly. If any question flags a concern, get medical clearance from your GP before training. Tell Stuart if anything material changes.' },
+  { h: '4. How your data is handled', p: 'Stuart is the data controller for the information you share. It is stored on UK or EU-based services and used only to deliver your coaching. It will not be shared without your written consent, except where required by law or where there is a credible risk to your safety. You can see, correct or delete your data any time by emailing hello@stuart-white.co.uk.' },
+  { h: '5. Photos, measurements and progress data', p: 'Some clients want measurements, weigh-ins or progress photos; some do not. Both are fine. Nothing is collected without your active consent and nothing is used publicly without your permission.' },
+  { h: '6. Cancellation and changes', p: "A session can be cancelled with 24 hours' notice at no charge. Email hello@stuart-white.co.uk to do so. If you cancel after that you will still be charged." },
+  { h: '7. Liability', p: 'Exercise carries inherent physical risk. You are responsible for performing exercises safely, within your own limits, and in line with any medical advice you have received. Stuart is not liable for outcomes resulting from incomplete or inaccurate information you provided, or from the inherent risk of exercise. This does not exclude any liability that cannot be excluded under UK law.' },
+];
+
+const parqText = [
+  'Has your doctor ever said that you have a heart condition, and that you should only do physical activity recommended by a doctor?',
+  'Do you feel pain in your chest when you do physical activity?',
+  'In the past month, have you had chest pain when you were not doing physical activity?',
+  'Do you lose your balance because of dizziness, or do you ever lose consciousness?',
+  'Do you have a bone or joint problem that could be made worse by a change in your physical activity?',
+  'Is your doctor currently prescribing drugs for your blood pressure or heart condition?',
+  'Do you know of any other reason why you should not do physical activity?',
+  'Are you currently pregnant or have you given birth in the last 12 months?',
+];
+---
+<BaseLayout
+  title="New client intake — personal training & classes — Stuart White"
+  description="In-person personal training and group class intake with Stuart White. Around five minutes."
+  bg="#0A0A0A"
+>
+  <Fragment slot="head">
+    <style>
+      html, body { line-height: 1.55; min-height: 100%; }
+      body { padding-bottom: 80px; }
+      input, select, textarea {
+        font-family: 'Montserrat', sans-serif; font-size: 15px; color: #FFFFFF;
+        background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.25);
+        padding: 10px 0; outline: none; width: 100%; border-radius: 0;
+        -webkit-appearance: none; appearance: none;
+      }
+      input::placeholder, textarea::placeholder { color: #9a9a9a; }
+      input:focus, select:focus, textarea:focus { border-bottom-color: rgba(255,255,255,0.6); }
+      textarea { min-height: 100px; resize: vertical; border: 1px solid rgba(255,255,255,0.25); padding: 14px; border-radius: 2px; }
+      select option { background: #0A0A0A; color: #FFFFFF; }
+      .pti-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 22px; }
+      .pti-row.one { grid-template-columns: 1fr; }
+      @media (max-width: 640px) { .pti-row { grid-template-columns: 1fr; gap: 18px; } }
+      .pti-shell { min-height: 100vh; padding-bottom: 80px; }
+      .pti-header { position: sticky; top: 0; z-index: 50; background: #0A0A0A; border-bottom: 1px solid #1A1A1A; }
+      .pti-header-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(24px,5vw,52px); max-width: 880px; margin: 0 auto; }
+      .pti-progress-track { height: 2px; background: #1A1A1A; }
+      .pti-progress-fill { height: 100%; background: #FFFFFF; width: 0%; transition: width .35s ease-out; }
+      .pti-page { max-width: 720px; margin: 0 auto; padding: clamp(32px,5vw,48px) clamp(24px,5vw,52px) 64px; }
+      .pti-step { display: none; }
+      .pti-step.active { display: block; }
+      .pti-corner { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #c4c4c4; display: block; margin-bottom: 18px; }
+      .pti-h { font-family: 'Kensington Compressed', 'Arial Narrow', sans-serif; font-weight: 400; font-size: clamp(36px,5vw,56px); line-height: 0.98; margin-bottom: 14px; }
+      .pti-tile { font-size: 14px; padding: 14px 18px; cursor: pointer; border-radius: 2px; text-align: center; transition: all .12s; background: transparent; color: #e6e6e6; border: 1px solid rgba(255,255,255,0.25); }
+      .pti-tile.on { background: #FFFFFF; color: #0A0A0A; border: 1px solid #FFFFFF; }
+      .pti-followup { background: #1A1A1A; border-left: 2px solid #FFFFFF; padding: 24px; margin-top: 24px; display: none; }
+      .pti-followup.visible { display: block; }
+      .pti-error { color: #ff6b6b; font-size: 13px; margin-top: 16px; display: none; }
+      .pti-error.visible { display: block; }
+      .pti-nav-row { display: flex; justify-content: space-between; gap: 16px; margin-top: 44px; padding-top: 28px; border-top: 1px solid #1A1A1A; }
+      .pti-btn { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 16px 36px; cursor: pointer; border-radius: 2px; }
+      .pti-btn-primary { color: #0A0A0A; background: #FFFFFF; border: 1px solid #FFFFFF; }
+      .pti-btn-ghost { color: #e6e6e6; background: transparent; border: 1px solid rgba(255,255,255,0.25); padding: 16px 30px; }
+      .pti-agreement { background: #1A1A1A; padding: 26px; border-radius: 2px; max-height: 340px; overflow-y: auto; font-size: 13px; color: #e6e6e6; line-height: 1.65; margin-bottom: 24px; }
+      .pti-agreement h4 { font-size: 13px; font-weight: 600; color: #FFFFFF; margin: 16px 0 8px; }
+      .pti-agreement h4:first-child { margin-top: 0; }
+      .hp-field { position: absolute; left: -9999px; top: -9999px; }
+    </style>
+  </Fragment>
+
+  <div class="pti-shell">
+    <header class="pti-header">
+      <div class="pti-header-inner">
+        <a href="/" aria-label="Stuart White home"><img src="/images/sw-wordmark-white.png" alt="STUARTWHITE" style="height:18px;width:auto;display:block;" /></a>
+        <span id="pti-progress-meta" style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;">New client intake</span>
+      </div>
+      <div class="pti-progress-track"><div class="pti-progress-fill" id="pti-progress-fill"></div></div>
+    </header>
+
+    <div class="pti-page">
+
+      <section class="pti-step active" data-step="intro">
+        <span class="pti-corner">Before you start</span>
+        <h1 class="pti-h" style="font-size:clamp(40px,5.5vw,64px);">New client intake.</h1>
+        <div style="font-size:15px;color:#e6e6e6;line-height:1.65;max-width:520px;">
+          <p style="margin-bottom:14px;">Around five minutes. You've already booked and paid; this just makes sure your sessions are safe and right for you from day one.</p>
+          <p style="margin-bottom:14px;">Be honest about anything that affects what's safe for you to do.</p>
+        </div>
+        <ul style="list-style:none;margin:28px 0;">
+          <li style="padding:14px 0;border-bottom:1px solid #1A1A1A;display:flex;gap:18px;align-items:baseline;font-size:14px;color:#e6e6e6;"><span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;min-width:80px;">Time</span><span>Around 5 minutes</span></li>
+          <li style="padding:14px 0;border-bottom:1px solid #1A1A1A;display:flex;gap:18px;align-items:baseline;font-size:14px;color:#e6e6e6;"><span style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#c4c4c4;min-width:80px;">Data</span><span>Handled in strict confidence</span></li>
+        </ul>
+        <div style="display:flex;justify-content:flex-end;margin-top:40px;">
+          <button type="button" class="pti-btn pti-btn-primary" data-action="next">Start &rarr;</button>
+        </div>
+      </section>
+
+      <form id="pti-form" name="ptintake" method="POST" data-netlify="true" netlify-honeypot="pti-bot-field" action="/ptintake?success=1">
+        <input type="hidden" name="form-name" value="ptintake" />
+        <p class="hp-field"><label>Don't fill this out: <input name="pti-bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+        <section class="pti-step" data-step="1">
+          <span class="pti-corner">Section 1 of 3 &middot; About you</span>
+          <h2 class="pti-h">About you.</h2>
+          <p style="font-size:15px;color:#e6e6e6;margin-bottom:30px;">The basics. Two minutes.</p>
+          <div data-step-fields="1">
+            <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Full name</label><input type="text" name="name" autocomplete="name" required /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Email</label><input type="email" name="email" autocomplete="email" required /></div></div>
+            <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Phone <span style="font-size:10px;color:#9a9a9a;font-weight:400;">Optional</span></label><input type="tel" name="phone" autocomplete="tel" /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Date of birth</label><input type="date" name="dob" required /></div></div>
+            <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Gender</label><select name="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Town or city</label><input type="text" name="city" autocomplete="address-level2" required /></div></div>
+            <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Height (cm)</label><input type="number" name="height" min="120" max="230" step="1" required /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Weight (kg)</label><input type="number" name="weight" min="35" max="250" step="0.1" required /></div></div>
+          </div>
+          <p class="pti-error" id="pti-err-1">Please fill in all required fields.</p>
+          <div class="pti-nav-row"><button type="button" class="pti-btn pti-btn-ghost" data-action="prev">&larr; Back</button><button type="button" class="pti-btn pti-btn-primary" data-action="next">Continue &rarr;</button></div>
+        </section>
+
+        <section class="pti-step" data-step="2">
+          <span class="pti-corner">Section 2 of 3 &middot; Health screen</span>
+          <h2 class="pti-h">Health screen.</h2>
+          <p style="font-size:15px;color:#e6e6e6;margin-bottom:30px;max-width:520px;">A standard pre-exercise health check. All answers are confidential. If anything is yes, a short follow-up appears below.</p>
+          <div style="display:flex;flex-direction:column;gap:18px;" id="pti-parq-group">
+            {parqText.map((text, idx) => (
+              <div>
+                <label style="font-size:13px;font-weight:500;color:#e6e6e6;display:block;margin-bottom:12px;line-height:1.5;">{idx + 1}. {text}</label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                  <button type="button" class="pti-tile" data-parq={idx + 1} data-value="No">No</button>
+                  <button type="button" class="pti-tile" data-parq={idx + 1} data-value="Yes">Yes</button>
+                </div>
+                <input type="hidden" name={`parq${idx + 1}`} id={`pti-h-parq${idx + 1}`} />
+              </div>
+            ))}
+          </div>
+          <div class="pti-followup" id="pti-followup">
+            <span class="pti-corner" style="margin-bottom:8px;">Follow-up</span>
+            <p style="font-size:13px;color:#9a9a9a;margin-bottom:22px;line-height:1.6;">You ticked yes to one or more questions. A bit more detail helps me keep you safe.</p>
+            <div class="pti-row one" style="margin-bottom:18px;"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">GP clearance status</label><select name="gpClearance"><option value="">Select</option><option>Clearance obtained, I have written confirmation</option><option>Clearance pending, I have contacted my GP</option><option>Not yet sought</option></select></div></div>
+            <div class="pti-row one" style="margin-bottom:18px;"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Injuries relevant to training</label><textarea name="injuries"></textarea></div></div>
+            <div class="pti-row one"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Medications or other conditions <span style="font-size:10px;color:#9a9a9a;font-weight:400;">If applicable</span></label><textarea name="conditions"></textarea></div></div>
+          </div>
+          <p class="pti-error" id="pti-err-2">Please answer all eight screening questions.</p>
+          <div class="pti-nav-row"><button type="button" class="pti-btn pti-btn-ghost" data-action="prev">&larr; Back</button><button type="button" class="pti-btn pti-btn-primary" data-action="next">Continue &rarr;</button></div>
+        </section>
+
+        <section class="pti-step" data-step="3">
+          <span class="pti-corner">Section 3 of 3 &middot; Sign and send</span>
+          <h2 class="pti-h">Agreement and consent.</h2>
+          <p style="font-size:15px;color:#e6e6e6;margin-bottom:24px;">Read this, sign at the bottom, send. Last step.</p>
+          <div class="pti-agreement" aria-label="Coaching agreement">
+            {agreement.map((a) => (
+              <>
+                <h4>{a.h}</h4>
+                <p style="margin-bottom:10px;">{a.p}</p>
+              </>
+            ))}
+          </div>
+          <label style="display:flex;align-items:flex-start;gap:12px;border:1px solid rgba(255,255,255,0.25);padding:14px;border-radius:2px;cursor:pointer;margin-bottom:22px;font-size:14px;color:#e6e6e6;">
+            <input type="checkbox" id="pti-agree" name="agreed" value="Yes" required style="width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:#FFFFFF;" />
+            <span>I have read and understood this agreement and I am entering into this programme voluntarily.</span>
+          </label>
+          <div class="pti-row"><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Full name (as signature)</label><input type="text" name="signatureName" id="pti-sig-name" required /></div><div><label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Date</label><input type="date" name="signatureDate" id="pti-sig-date" required /></div></div>
+          <div class="pti-row one"><div>
+            <label style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#c4c4c4;display:block;margin-bottom:8px;">Signature</label>
+            <div style="background:#FFFFFF;border-radius:2px;"><canvas id="pti-sig-pad" width="600" height="180" style="display:block;width:100%;height:180px;touch-action:none;border-radius:2px;"></canvas></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px;">
+              <span style="font-size:12px;color:#9a9a9a;">Draw your signature with your mouse or finger.</span>
+              <button type="button" id="pti-clear-sig" style="background:transparent;border:1px solid rgba(255,255,255,0.25);color:#e6e6e6;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:8px 14px;cursor:pointer;border-radius:2px;">Clear</button>
+            </div>
+            <input type="hidden" name="signature" id="pti-sig-data" />
+          </div></div>
+          <p class="pti-error" id="pti-err-3">Please tick the agreement, add your name, date and signature.</p>
+          <div class="pti-nav-row"><button type="button" class="pti-btn pti-btn-ghost" data-action="prev">&larr; Back</button><button type="submit" class="pti-btn pti-btn-primary" id="pti-submit-btn">Submit form</button></div>
+        </section>
+      </form>
+
+      <section class="pti-step" data-step="done">
+        <span class="pti-corner">Confirmation</span>
+        <h2 class="pti-h" style="font-size:clamp(44px,6vw,72px);line-height:1;">Thanks. I've got everything I need.</h2>
+        <div style="font-size:15px;color:#e6e6e6;line-height:1.7;max-width:520px;">
+          <p style="margin-bottom:14px;">I'll be in touch shortly to confirm your first session or class.</p>
+          <p style="margin-bottom:14px;">If anything urgent comes up in the meantime, email <a href="mailto:hello@stuart-white.co.uk" style="border-bottom:1px solid #6B6B6B;color:inherit;">hello@stuart-white.co.uk</a>.</p>
+          <p><a href="/" style="border-bottom:1px solid #6B6B6B;color:inherit;">Back to the site &rarr;</a></p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var STEP_ORDER = ['intro', '1', '2', '3', 'done'];
+      var currentStep = 'intro';
+      var sigCanvas: HTMLCanvasElement, sigCtx: CanvasRenderingContext2D, sigHasInk = false, sigDrawing = false, sigLast: { x: number; y: number } | null = null;
+
+      function $(s: string) { return document.querySelector(s); }
+      function $$(s: string, ctx?: ParentNode) { return Array.from((ctx || document).querySelectorAll(s)); }
+
+      function showStep(id: string) {
+        currentStep = id;
+        $$('.pti-step').forEach((s) => s.classList.remove('active'));
+        var el = document.querySelector('.pti-step[data-step="' + id + '"]');
+        if (el) el.classList.add('active');
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function updateProgress() {
+        var idx = STEP_ORDER.indexOf(currentStep);
+        var total = STEP_ORDER.length - 2;
+        var meta = $('#pti-progress-meta') as HTMLElement;
+        var fill = $('#pti-progress-fill') as HTMLElement;
+        var labels: Record<string, string> = { intro: 'New client intake', '1': 'Section 1 of 3', '2': 'Section 2 of 3', '3': 'Section 3 of 3', done: 'Complete' };
+        meta.textContent = labels[currentStep];
+        if (currentStep === 'intro') fill.style.width = '0%';
+        else if (currentStep === 'done') fill.style.width = '100%';
+        else fill.style.width = (Math.max(0, idx - 1) / total * 100) + '%';
+      }
+
+      function refreshFollowup() {
+        var anyYes = false;
+        for (var i = 1; i <= 8; i++) {
+          var h = document.getElementById('pti-h-parq' + i) as HTMLInputElement;
+          if (h && h.value === 'Yes') { anyYes = true; break; }
+        }
+        var fu = $('#pti-followup');
+        if (fu) fu.classList.toggle('visible', anyYes);
+      }
+
+      function bindParq() {
+        $$('.pti-tile[data-parq]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            var n = btn.getAttribute('data-parq');
+            var value = btn.getAttribute('data-value');
+            var hidden = document.getElementById('pti-h-parq' + n) as HTMLInputElement;
+            if (hidden) hidden.value = value || '';
+            $$('.pti-tile[data-parq="' + n + '"]').forEach((b) => b.classList.toggle('on', b === btn));
+            refreshFollowup();
+          });
+        });
+      }
+
+      function validateStep(step: string) {
+        var ok = true;
+        if (step === '1') {
+          var wrap = document.querySelector('[data-step-fields="1"]');
+          if (wrap) {
+            $$('input[required], select[required]', wrap).forEach((el: any) => { if (!el.value) ok = false; });
+          }
+        }
+        if (step === '2') {
+          for (var i = 1; i <= 8; i++) {
+            var h = document.getElementById('pti-h-parq' + i) as HTMLInputElement;
+            if (!h || !h.value) ok = false;
+          }
+        }
+        if (step === '3') {
+          if (!($('#pti-agree') as HTMLInputElement).checked) ok = false;
+          if (!(($('#pti-sig-name') as HTMLInputElement).value.trim())) ok = false;
+          if (!(($('#pti-sig-date') as HTMLInputElement).value.trim())) ok = false;
+          if (!sigHasInk) ok = false;
+        }
+        var err = document.getElementById('pti-err-' + step);
+        if (err) err.classList.toggle('visible', !ok);
+        return ok;
+      }
+
+      function initSignature() {
+        sigCanvas = $('#pti-sig-pad') as HTMLCanvasElement;
+        sigCtx = sigCanvas.getContext('2d')!;
+        function resize() {
+          var ratio = Math.max(window.devicePixelRatio || 1, 1);
+          var w = sigCanvas.offsetWidth, h = 180;
+          if (w === 0) return;
+          sigCanvas.width = w * ratio;
+          sigCanvas.height = h * ratio;
+          sigCtx.setTransform(1, 0, 0, 1, 0, 0);
+          sigCtx.scale(ratio, ratio);
+          sigCtx.lineCap = 'round'; sigCtx.lineJoin = 'round'; sigCtx.lineWidth = 2; sigCtx.strokeStyle = '#0A0A0A';
+          sigCtx.fillStyle = '#FFFFFF'; sigCtx.fillRect(0, 0, w, h);
+        }
+        function point(e: any) {
+          var rect = sigCanvas.getBoundingClientRect();
+          var t = e.touches && e.touches[0] ? e.touches[0] : e;
+          return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+        }
+        function start(e: any) { e.preventDefault(); sigDrawing = true; sigLast = point(e); sigHasInk = true; }
+        function move(e: any) {
+          if (!sigDrawing || !sigLast) return;
+          e.preventDefault();
+          var p = point(e);
+          sigCtx.beginPath(); sigCtx.moveTo(sigLast.x, sigLast.y); sigCtx.lineTo(p.x, p.y); sigCtx.stroke();
+          sigLast = p;
+        }
+        function end() { sigDrawing = false; }
+        window.addEventListener('resize', resize);
+        resize();
+        sigCanvas.addEventListener('mousedown', start);
+        sigCanvas.addEventListener('mousemove', move);
+        sigCanvas.addEventListener('mouseup', end);
+        sigCanvas.addEventListener('mouseleave', end);
+        sigCanvas.addEventListener('touchstart', start, { passive: false });
+        sigCanvas.addEventListener('touchmove', move, { passive: false });
+        sigCanvas.addEventListener('touchend', end);
+
+        var clearBtn = $('#pti-clear-sig');
+        if (clearBtn) clearBtn.addEventListener('click', () => {
+          var w = sigCanvas.offsetWidth, h = 180;
+          sigCtx.fillStyle = '#FFFFFF'; sigCtx.fillRect(0, 0, w, h);
+          sigHasInk = false;
+          (document.getElementById('pti-sig-data') as HTMLInputElement).value = '';
+        });
+      }
+
+      function encodeFormData(form: HTMLFormElement) {
+        var fd = new FormData(form);
+        var pairs: string[] = [];
+        fd.forEach((value, key) => pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(value as string)));
+        return pairs.join('&');
+      }
+
+      function handleSubmit(e: Event) {
+        e.preventDefault();
+        if (!validateStep('3')) return;
+        var btn = $('#pti-submit-btn') as HTMLButtonElement;
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+        if (sigHasInk) (document.getElementById('pti-sig-data') as HTMLInputElement).value = sigCanvas.toDataURL('image/png');
+        var form = $('#pti-form') as HTMLFormElement;
+        fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: encodeFormData(form) })
+          .then((r) => { if (!r.ok) throw new Error('Server ' + r.status); showStep('done'); })
+          .catch(() => {
+            btn.disabled = false;
+            btn.textContent = 'Submit form';
+            var err = $('#pti-err-3') as HTMLElement;
+            err.textContent = 'Could not submit. Please try again, or email hello@stuart-white.co.uk.';
+            err.classList.add('visible');
+          });
+      }
+
+      function bind() {
+        $$('button[data-action]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            var action = btn.getAttribute('data-action');
+            if (action === 'next') {
+              if (currentStep === 'intro') { showStep('1'); return; }
+              if (!validateStep(currentStep)) return;
+              var idx = STEP_ORDER.indexOf(currentStep);
+              if (idx < STEP_ORDER.length - 1) showStep(STEP_ORDER[idx + 1]);
+            } else if (action === 'prev') {
+              var i = STEP_ORDER.indexOf(currentStep);
+              if (i > 0) showStep(STEP_ORDER[i - 1]);
+            }
+          });
+        });
+        var form = $('#pti-form');
+        if (form) form.addEventListener('submit', handleSubmit);
+        var today = new Date().toISOString().slice(0, 10);
+        var dEl = $('#pti-sig-date') as HTMLInputElement;
+        if (dEl && !dEl.value) dEl.value = today;
+      }
+
+      bindParq();
+      bind();
+      initSignature();
+      showStep(currentStep);
+    })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,76 @@
+---
+import { NAV_LINKS, CTA_LABEL, CTA_HREF } from '../lib/site-config';
+
+interface Props {
+  active?: string;
+}
+const { active = '' } = Astro.props;
+const linkStyle = (isActive: boolean) =>
+  `font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;padding-bottom:3px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;` +
+  (isActive ? 'color:#FFFFFF;border-color:#FFFFFF;' : 'color:#9A9A9A;');
+const drawerStyle = (isActive: boolean) =>
+  `display:block;font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:30px;line-height:1;padding:16px 0;border-bottom:1px solid #2A2A2A;` +
+  (isActive ? 'color:#FFFFFF;' : 'color:#9A9A9A;');
+---
+<style>
+  @media (max-width: 860px) {
+    [data-desktop-nav] { display: none !important; }
+    [data-burger] { display: flex !important; }
+  }
+  .sw-nav-drawer { display: none; }
+  .sw-nav-drawer.open { display: block; }
+</style>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,56px);background:#0A0A0A;border-bottom:1px solid #1A1A1A;font-family:'Montserrat',sans-serif;">
+  <a href="/" aria-label="Stuart White home" style="display:flex;align-items:center;">
+    <!-- TODO: swap for final wordmark-only logo file when supplied -->
+    <img src="/images/sw-wordmark-white.png" alt="STUARTWHITE" width="132" height="30" style="height:19px;width:auto;display:block;" />
+  </a>
+
+  <div style="display:flex;align-items:center;gap:clamp(20px,3vw,38px);" data-desktop-nav>
+    <ul style="display:flex;gap:clamp(18px,2.4vw,34px);list-style:none;margin:0;padding:0;align-items:center;">
+      {NAV_LINKS.map((link) => (
+        <li>
+          <a href={link.href} style={linkStyle(link.href === active)}>{link.label}</a>
+        </li>
+      ))}
+    </ul>
+    <a href={CTA_HREF} style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#0A0A0A;background:#FFFFFF;border:1px solid #FFFFFF;padding:11px 22px;border-radius:2px;white-space:nowrap;">{CTA_LABEL}</a>
+  </div>
+
+  <button aria-label="Open menu" data-nav-open style="display:none;background:none;border:none;padding:8px;cursor:pointer;color:#FFFFFF;line-height:0;min-width:44px;min-height:44px;align-items:center;justify-content:center;" data-burger>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><line x1="3" y1="7" x2="21" y2="7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line><line x1="3" y1="13" x2="21" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line></svg>
+  </button>
+</nav>
+
+<div class="sw-nav-drawer" data-nav-drawer>
+  <div data-nav-scrim style="position:fixed;inset:0;z-index:1001;background:rgba(10,10,10,0.6);" aria-hidden="true"></div>
+  <aside style="position:fixed;top:0;right:0;bottom:0;z-index:1002;width:min(320px,84vw);background:#1A1A1A;border-left:1px solid #2A2A2A;padding:22px 30px 40px;display:flex;flex-direction:column;font-family:'Montserrat',sans-serif;">
+    <button aria-label="Close menu" data-nav-close style="align-self:flex-end;background:none;border:none;padding:8px;cursor:pointer;color:#9A9A9A;line-height:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="3" y1="3" x2="17" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line><line x1="17" y1="3" x2="3" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></line></svg>
+    </button>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;flex:1;">
+      {NAV_LINKS.map((link) => (
+        <li><a href={link.href} style={drawerStyle(link.href === active)}>{link.label}</a></li>
+      ))}
+    </ul>
+    <a href={CTA_HREF} style="display:block;margin-top:28px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:15px 0;text-align:center;border:1px solid #FFFFFF;color:#0A0A0A;background:#FFFFFF;border-radius:2px;">{CTA_LABEL}</a>
+  </aside>
+</div>
+
+<script>
+  function initNav() {
+    const openBtn = document.querySelector<HTMLButtonElement>('[data-nav-open]');
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-nav-close]');
+    const scrim = document.querySelector<HTMLDivElement>('[data-nav-scrim]');
+    const drawer = document.querySelector<HTMLDivElement>('[data-nav-drawer]');
+    if (!openBtn || !closeBtn || !scrim || !drawer) return;
+    const open = () => drawer.classList.add('open');
+    const close = () => drawer.classList.remove('open');
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    scrim.addEventListener('click', close);
+  }
+  initNav();
+  document.addEventListener('astro:page-load', initNav);
+</script>

@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import CalendlyEmbed from '../components/CalendlyEmbed.astro';
+import { CLASSES, CALENDLY } from '../lib/site-config';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'CommFit — Community Fitness Class',
+  description: 'A friendly outdoor fitness class mixing cardio and resistance work with dumbbells, kettlebells and sandbags. All levels, scaled on the night.',
+  eventSchedule: { '@type': 'Schedule', byDay: 'Wednesday', startTime: '19:00', repeatFrequency: 'P1W' },
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: 'Field opposite Fellside Primary School',
+    address: { '@type': 'PostalAddress', addressLocality: 'Whickham', addressRegion: 'Tyne and Wear', addressCountry: 'GB' },
+  },
+  offers: { '@type': 'Offer', price: '5', priceCurrency: 'GBP', availability: 'https://schema.org/InStock' },
+  organizer: { '@type': 'Person', name: 'Stuart White' },
+};
+---
+<BaseLayout
+  title="Group fitness classes in Whickham — CommFit — Stuart White"
+  description="CommFit: a friendly outdoor fitness class in Whickham. Wednesdays 7pm on the field opposite Fellside Primary School. £5 a session, every level welcome. Book and pay online."
+  bg="#0A0A0A"
+  structuredData={structuredData}
+>
+  <Fragment slot="head">
+    <style>
+      .gc-btn-light:hover { background: #FFFFFF; }
+      .gc-btn-dark:hover { background: #1A1A1A; }
+      .gc-textlink:hover { border-color: currentColor !important; }
+      @media (max-width: 900px) {
+        [data-two] { grid-template-columns: 1fr !important; }
+        [data-classcard] { grid-template-columns: 1fr !important; }
+        [data-bring] { grid-template-columns: 1fr 1fr !important; }
+      }
+    </style>
+  </Fragment>
+
+  <div style="font-family:'Montserrat',sans-serif;background:#FFFFFF;color:#0A0A0A;">
+    <SiteNav active="/group-classes" />
+
+    <!-- HERO -->
+    <section style="position:relative;min-height:92svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(24px,6vw,80px) clamp(56px,8vh,100px);overflow:hidden;background:#0A0A0A;">
+      <img src="/images/raw/17171.jpg" alt="A runner in motion, monochrome and motion-blurred" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% center;filter:grayscale(1) contrast(1.08) brightness(0.85);z-index:0;" fetchpriority="high" />
+      <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,10,10,0.9) 0%,rgba(10,10,10,0.6) 46%,rgba(10,10,10,0.2) 100%);"></div>
+      <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:220px;z-index:1;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"></div>
+      <div style="position:relative;z-index:2;max-width:720px;color:#FFFFFF;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A9A;margin-bottom:22px;">Group · Whickham</span>
+        <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(52px,9vw,100px);line-height:0.95;margin:0 0 22px;">Group classes in Whickham.</h1>
+        <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:#E6E6E6;max-width:520px;margin:0 0 34px;">One hour, once a week, on the field opposite Fellside Primary School. A fiver. Every level welcome.</p>
+        <a href="#book" class="gc-btn-light" style="display:inline-block;background:#FFFFFF;color:#0A0A0A;border:1px solid #FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:16px 40px;border-radius:2px;transition:background .15s;">Book this week's class</a>
+      </div>
+    </section>
+
+    <!-- WHY I RUN THESE -->
+    <section style="padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:900px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:32px;">Why I run these</span>
+        <p style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(28px,3.6vw,46px);line-height:1.1;margin:0;">&ldquo;Fitness should be for everyone and that's why I've created CommFit. Fun, community fitness classes which use a mix of cardio and resistance training, and where everything is scalable based on your ability.&rdquo;</p>
+        <p style="font-size:13px;letter-spacing:0.04em;color:#6B6B6B;margin:28px 0 0;">Stuart</p>
+      </div>
+    </section>
+
+    <!-- THE CLASSES (list) -->
+    <section style="background:#0A0A0A;color:#FFFFFF;padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9A9A;margin-bottom:40px;">The classes</span>
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          {CLASSES.map((c) => (
+            <article data-classcard style="display:grid;grid-template-columns:1.15fr 0.85fr;border:1px solid #2A2A2A;background:#1A1A1A;">
+              <div style="padding:clamp(28px,3.5vw,48px);">
+                <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px;">
+                  <h3 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(38px,5vw,60px);line-height:1;margin:0;">{c.name}</h3>
+                  <span style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#9A9A9A;">{c.strap}</span>
+                </div>
+                <p style="font-size:16px;line-height:1.6;color:#CCCCCC;margin:0 0 28px;max-width:440px;">{c.blurb}</p>
+                <dl style="margin:0;display:grid;grid-template-columns:1fr 1fr;gap:20px 24px;border-top:1px solid #2A2A2A;padding-top:24px;">
+                  <div><dt style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;margin-bottom:6px;">When</dt><dd style="margin:0;font-size:15px;color:#FFFFFF;">{c.day}, {c.time}</dd></div>
+                  <div><dt style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;margin-bottom:6px;">Where</dt><dd style="margin:0;font-size:15px;color:#FFFFFF;">{c.place}</dd></div>
+                  <div><dt style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;margin-bottom:6px;">Kit</dt><dd style="margin:0;font-size:15px;color:#FFFFFF;">{c.kit}</dd></div>
+                  <div><dt style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;margin-bottom:6px;">Price</dt><dd style="margin:0;font-size:15px;color:#FFFFFF;">{c.price} {c.priceNote}, pay when you book</dd></div>
+                </dl>
+              </div>
+              <div style="position:relative;background:#0A0A0A;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;min-height:260px;">
+                <img src="/images/raw/17914b.jpg" alt="Hands gripping gymnastic rings mid-movement, motion-blurred" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08) brightness(0.8);" loading="lazy" />
+                <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.9),rgba(10,10,10,0.2));"></div>
+                <a href="#book" class="gc-btn-light" style={`position:relative;z-index:2;margin:clamp(20px,3vw,32px);text-align:center;background:#FFFFFF;color:#0A0A0A;border:1px solid #FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:15px 20px;border-radius:2px;transition:background .15s;`}>Book this week's {c.name}</a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p style="font-size:14px;color:#6B6B6B;margin:28px 0 0;">More classes are coming. This list grows as they do.</p>
+      </div>
+    </section>
+
+    <!-- WHAT TO BRING -->
+    <section style="padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:20px;">What to bring</span>
+        <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(30px,4vw,48px);line-height:1;margin:0 0 44px;max-width:560px;">Turn up with three things. I bring the rest.</h2>
+        <div data-bring style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #0A0A0A;">
+          <div style="padding:28px 24px 28px 0;border-right:1px solid #E6E6E6;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">Trainers</span></div>
+          <div style="padding:28px 24px;border-right:1px solid #E6E6E6;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">Water</span></div>
+          <div style="padding:28px 0 28px 24px;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">A jacket if it's grim</span></div>
+        </div>
+        <p style="font-size:16px;color:#6B6B6B;margin:24px 0 0;">All the kit is provided. Just show up ready to move.</p>
+      </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section id="book" style="background:#F5F5F5;padding:clamp(56px,8vw,104px) clamp(24px,6vw,80px);scroll-margin-top:64px;">
+      <div style="max-width:820px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:18px;">Book this week's class</span>
+        <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(32px,4.5vw,52px);line-height:1;margin:0 0 12px;">Grab a spot. It's a fiver.</h2>
+        <p style="font-size:16px;line-height:1.55;color:#6B6B6B;max-width:520px;margin:0 0 36px;">Pick this week's Wednesday below and pay your £5. Spaces are capped so everyone gets coached. First time? Your confirmation includes a short health and goals form.</p>
+        <CalendlyEmbed url={CALENDLY.commfit} price="£5" note="a session" label="Pick this week's CommFit" />
+        <p style="font-size:14px;line-height:1.6;color:#6B6B6B;margin:28px 0 0;">Never done a class before? <a href="/book-a-call" class="gc-textlink" style="color:#0A0A0A;font-weight:600;border-bottom:1px solid #CCCCCC;transition:border-color .15s;">Ask me anything on a free call</a> first.</p>
+      </div>
+    </section>
+
+    <!-- SMALL PRINT -->
+    <section style="background:#0A0A0A;color:#FFFFFF;padding:clamp(48px,6vw,80px) clamp(24px,6vw,80px);border-top:1px solid #1A1A1A;">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9A9A;margin-bottom:24px;">Small print</span>
+        <div data-two style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);">
+          <p style="font-size:15px;line-height:1.65;color:#CCCCCC;margin:0;"><strong style="color:#FFFFFF;font-weight:600;">Weather.</strong> We train outdoors and a bit of rain is fine. <!-- TODO: Stuart to confirm final weather policy wording --> If conditions are genuinely unsafe I'll call it off and let you know in good time.</p>
+          <p style="font-size:15px;line-height:1.65;color:#CCCCCC;margin:0;"><strong style="color:#FFFFFF;font-weight:600;">Cancellations.</strong> If a class is cancelled for any reason, your £5 is refunded automatically. No emails, no chasing.</p>
+        </div>
+      </div>
+    </section>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

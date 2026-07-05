@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { INTAKE_URL } from '../lib/site-config';
+
+const credentials = [
+  'Qualified Personal Trainer',
+  'Qualified Nutritionist',
+  'Executive Coaching Certified',
+  'First Class Degree',
+];
+
+const services = [
+  {
+    kicker: 'Online', title: 'Online coaching',
+    bestIf: 'you want the full programme; training, nutrition and sleep, coached daily around your schedule, wherever you are.',
+    price: '£35', priceNote: '/ week', priceSub: 'First week free. No contract.',
+    cta: 'Start free trial', href: INTAKE_URL,
+  },
+  {
+    kicker: 'In person', title: 'Personal training',
+    bestIf: "you're near Whickham and want one to one sessions with me in the room; technique, intensity and accountability, face to face.",
+    price: '£35', priceNote: '/ hour', priceSub: 'Pay when you book.',
+    cta: 'Book a session', href: '/personal-training',
+  },
+  {
+    kicker: 'Group', title: 'Group classes',
+    bestIf: 'you want a hard, fun group session without a contract or a gym. First up: CommFit, Wednesdays 7pm, Whickham.',
+    price: '£5', priceNote: '/ class', priceSub: 'Pay when you book.',
+    cta: "Book this week's class", href: '/group-classes',
+  },
+];
+---
+<BaseLayout
+  title="Stuart White — fitness, nutrition and sleep coaching"
+  description="Fitness, nutrition and sleep coaching built around the life you actually have. Online, one to one in person, or in a weekly group class. Pick the way in that fits."
+  bg="#0A0A0A"
+>
+  <Fragment slot="head">
+    <style>
+      .sw-svc-card:hover { background: #FAFAFA; }
+      .sw-btn-dark:hover { background: #1A1A1A; }
+      .sw-btn-light:hover { background: #E6E6E6; }
+      .sw-textlink:hover { border-color: currentColor !important; }
+      @media (max-width: 900px) {
+        [data-svc-grid] { grid-template-columns: 1fr !important; }
+        [data-coach-grid] { grid-template-columns: 1fr !important; }
+        [data-cred] { grid-template-columns: 1fr 1fr !important; }
+        [data-closing-grid] { grid-template-columns: 1fr !important; }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        [data-fade] { opacity: 0; transform: translateY(14px); animation: swFade .7s cubic-bezier(.22,1,.36,1) forwards; }
+      }
+      @keyframes swFade { to { opacity: 1; transform: none; } }
+    </style>
+  </Fragment>
+
+  <div style="font-family:'Montserrat',sans-serif;background:#0A0A0A;color:#FFFFFF;">
+    <SiteNav active="" />
+
+    <!-- HERO -->
+    <section style="position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(24px,6vw,80px) clamp(56px,8vh,104px);overflow:hidden;">
+      <img src="/images/raw/homepage-hero.jpg" alt="A runner in motion on a hillside path at dusk" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% center;filter:grayscale(1) contrast(1.08) brightness(0.92);z-index:0;" fetchpriority="high" />
+      <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;background:linear-gradient(88deg,rgba(10,10,10,0.92) 0%,rgba(10,10,10,0.72) 34%,rgba(10,10,10,0.20) 64%,rgba(10,10,10,0.05) 100%);"></div>
+      <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:240px;z-index:1;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"></div>
+      <div data-fade style="position:relative;z-index:2;max-width:760px;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A9A;margin-bottom:24px;">Fitness · Nutrition · Sleep</span>
+        <h1 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(52px,9vw,104px);line-height:0.95;margin:0 0 24px;color:#FFFFFF;">Build a fitter, stronger, healthier you.</h1>
+        <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:#E6E6E6;max-width:540px;margin:0 0 36px;">Fitness, nutrition and sleep coaching built around the life you actually have. Online, one to one in person, or in a weekly group class. Pick the way in that fits.</p>
+        <a href="#three-ways-in" class="sw-btn-light" style="display:inline-block;background:#FFFFFF;color:#0A0A0A;border:1px solid #FFFFFF;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:16px 40px;border-radius:2px;transition:background .15s;">Find your fit</a>
+      </div>
+    </section>
+
+    <!-- CREDENTIALS -->
+    <div data-cred style="background:#1A1A1A;display:grid;grid-template-columns:repeat(4,1fr);">
+      {credentials.map((c) => (
+        <span style="font-size:clamp(11px,1.1vw,13px);font-weight:500;letter-spacing:0.06em;color:#CCCCCC;text-align:center;padding:22px 12px;border-left:1px solid rgba(255,255,255,0.1);">{c}</span>
+      ))}
+    </div>
+
+    <!-- SERVICE SELECTOR -->
+    <section id="three-ways-in" style="background:#FFFFFF;color:#0A0A0A;padding:clamp(64px,9vw,120px) clamp(24px,6vw,80px);scroll-margin-top:64px;">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:20px;">Three ways in</span>
+        <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(34px,5vw,60px);line-height:1;margin:0 0 14px;max-width:720px;">Pick the way in that fits your life.</h2>
+        <p style="font-size:17px;line-height:1.55;color:#6B6B6B;max-width:520px;margin:0 0 48px;">Same coaching, three formats. Read the one line under each and choose the one that sounds like you.</p>
+
+        <div data-svc-grid style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #0A0A0A;border-left:1px solid #E6E6E6;">
+          {services.map((s) => (
+            <div class="sw-svc-card" style="border-right:1px solid #E6E6E6;border-bottom:1px solid #E6E6E6;padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;transition:background .15s;">
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B6B;">{s.kicker}</span>
+              <h3 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(30px,3.2vw,40px);line-height:1;margin:14px 0 18px;">{s.title}</h3>
+              <p style="font-size:15px;line-height:1.55;color:#333333;margin:0 0 24px;flex:1;"><strong style="font-weight:600;color:#0A0A0A;">Best if </strong>{s.bestIf}</p>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:44px;line-height:1;">{s.price}</span><span style="font-size:13px;color:#6B6B6B;">{s.priceNote}</span></div>
+              <p style="font-size:12px;color:#6B6B6B;margin:0 0 26px;min-height:1.2em;">{s.priceSub}</p>
+              <a href={s.href} class="sw-btn-dark" style="display:block;text-align:center;background:#0A0A0A;color:#FFFFFF;border:1px solid #0A0A0A;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:15px 20px;border-radius:2px;transition:background .15s;">{s.cta}</a>
+            </div>
+          ))}
+        </div>
+
+        <p style="font-size:15px;line-height:1.6;color:#6B6B6B;margin:36px 0 0;max-width:640px;">Not sure which is right? <a href="/book-a-call" class="sw-textlink" style="color:#0A0A0A;font-weight:600;border-bottom:1px solid #CCCCCC;transition:border-color .15s;">Book a free 15-minute call</a> and I'll tell you honestly, even if the answer is none of them.</p>
+      </div>
+    </section>
+
+    <!-- THE COACH -->
+    <section style="background:#0A0A0A;color:#FFFFFF;padding:clamp(64px,9vw,120px) clamp(24px,6vw,80px);">
+      <div style="max-width:1180px;margin:0 auto;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#9A9A9A;margin-bottom:40px;">The coach</span>
+        <div data-coach-grid style="display:grid;grid-template-columns:0.85fr 1.15fr;gap:clamp(32px,5vw,72px);align-items:center;">
+          <div style="position:relative;">
+            <img src="/images/raw/headshot.png" alt="Stuart White in his gym" style="width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;filter:grayscale(1) contrast(1.05);display:block;" loading="lazy" />
+          </div>
+          <div>
+            <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(34px,4.5vw,58px);line-height:0.98;margin:0 0 24px;">I've lived the busy life you're living.</h2>
+            <p style="font-size:17px;line-height:1.6;color:#CCCCCC;margin:0 0 18px;max-width:520px;">20 years in senior corporate roles at businesses like Johnson &amp; Johnson, L'Oréal, Weetabix and Tommee Tippee. And 20 years of training alongside it, without missing a week.</p>
+            <p style="font-size:17px;line-height:1.6;color:#CCCCCC;margin:0 0 32px;max-width:520px;">So I know what it takes to stay in shape when the diary is full and prioritising yourself feels impossible. That's the whole job.</p>
+            <a href="/about" class="sw-textlink" style="font-size:13px;font-weight:600;letter-spacing:0.06em;color:#FFFFFF;border-bottom:1px solid #6B6B6B;padding-bottom:2px;transition:border-color .15s;">Read my story &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section style="background:#FFFFFF;color:#0A0A0A;padding:clamp(72px,10vw,128px) clamp(24px,6vw,80px);">
+      <div style="max-width:900px;margin:0 auto;text-align:center;">
+        <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:40px;">In their words</span>
+        <blockquote style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(28px,4vw,52px);line-height:1.12;margin:0;">&ldquo;I feel amazing, I've lost 8 kgs so far and I'm enjoying training so much. You can tell Stu really cares about my progress.&rdquo;</blockquote>
+        <p style="font-size:14px;letter-spacing:0.04em;color:#6B6B6B;margin:28px 0 0;font-style:italic;">Emily · online coaching</p>
+      </div>
+    </section>
+
+    <!-- CLOSING CTA -->
+    <section style="background:#0A0A0A;color:#FFFFFF;padding:clamp(64px,9vw,116px) clamp(24px,6vw,80px);border-top:1px solid #1A1A1A;">
+      <div style="max-width:1180px;margin:0 auto;">
+        <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(36px,5.5vw,72px);line-height:0.98;margin:0 0 12px;">Ready to start? Pick your way in.</h2>
+        <p style="font-size:16px;color:#9A9A9A;margin:0 0 44px;max-width:460px;">Three formats, one coach. Start today.</p>
+        <div data-closing-grid style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          {services.map((s) => (
+            <a href={s.href} class="sw-btn-dark" style="display:flex;flex-direction:column;gap:6px;background:#1A1A1A;border:1px solid #2A2A2A;padding:24px 26px;border-radius:2px;transition:background .15s;">
+              <span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:26px;line-height:1;">{s.title}</span>
+              <span style="font-size:13px;color:#9A9A9A;">{s.price} {s.priceNote}</span>
+              <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FFFFFF;margin-top:12px;">{s.cta} &rarr;</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <SiteFooter />
+  </div>
+</BaseLayout>

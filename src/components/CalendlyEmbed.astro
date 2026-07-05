@@ -1,0 +1,36 @@
+---
+interface Props {
+  url: string;
+  price: string;
+  note: string;
+  label?: string;
+}
+const { url, price, note, label = 'Pick a time that works' } = Astro.props;
+const styleQs = 'background_color=ffffff&text_color=0a0a0a&primary_color=0a0a0a&hide_event_type_details=1&hide_gdpr_banner=1';
+const dataUrl = url + (url.includes('?') ? '&' : '?') + styleQs;
+---
+<script src="https://assets.calendly.com/assets/external/widget.js" async is:inline></script>
+<div style="font-family:'Montserrat',sans-serif;background:#FFFFFF;border:1px solid #0A0A0A;">
+  <!-- Booking header: price restated at point of booking (conversion rule 2) -->
+  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:baseline;padding:20px 24px;border-bottom:1px solid #E6E6E6;">
+    <div style="display:flex;align-items:baseline;gap:10px;">
+      <span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;line-height:1;color:#0A0A0A;">{price}</span>
+      <span style="font-size:13px;color:#6B6B6B;">{note}</span>
+    </div>
+    <span style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6B6B6B;">Pay at booking · Secure checkout</span>
+  </div>
+
+  <div style="position:relative;min-height:640px;background:repeating-linear-gradient(45deg,#F5F5F5,#F5F5F5 10px,#FAFAFA 10px,#FAFAFA 20px);">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;pointer-events:none;">
+      <span style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#9A9A9A;margin-bottom:12px;">Scheduler</span>
+      <p style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:30px;line-height:1.05;color:#0A0A0A;margin:0 0 10px;max-width:360px;">{label}</p>
+    </div>
+    <!-- Real inline embed: fills and covers the placeholder once Calendly's script runs -->
+    <div class="calendly-inline-widget" data-url={dataUrl} style="position:relative;z-index:2;min-width:320px;height:640px;"></div>
+  </div>
+
+  <!-- Guaranteed functional fallback path -->
+  <div style="padding:16px 24px;border-top:1px solid #E6E6E6;text-align:center;">
+    <a href={url} target="_blank" rel="noopener" style="font-size:13px;color:#0A0A0A;font-weight:600;border-bottom:1px solid #CCCCCC;">Trouble loading? Open the scheduler in a new tab &rarr;</a>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  bg?: string;
+  structuredData?: Record<string, unknown>;
+}
+const { title, description, bg = '#0A0A0A', structuredData } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  {structuredData && (
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  )}
+  <style>
+    @font-face {
+      font-family: 'Kensington Compressed';
+      src: url('/fonts/Kensington-CompressedRegular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    a { text-decoration: none; color: inherit; }
+    :focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+  </style>
+  <slot name="head" />
+</head>
+<body style={`font-family:'Montserrat',sans-serif;background:${bg};`}>
+  <slot />
+</body>
+</html>
