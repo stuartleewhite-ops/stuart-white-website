@@ -624,12 +624,19 @@ import SiteNav from '../components/SiteNav.astro';
             if (!anyD) { ok = false; break; }
           }
         }
+        var step6Missing: string[] = [];
         if (step === '6') {
-          if (!($('#f-agree') as HTMLInputElement).checked) ok = false;
-          if (!sigPad || sigPad.isEmpty()) ok = false;
+          if (!($('#f-agree') as HTMLInputElement).checked) step6Missing.push('tick the agreement checkbox');
+          if (!sigPad || sigPad.isEmpty()) step6Missing.push('draw your signature');
+          if (step6Missing.length) ok = false;
         }
         var err = document.getElementById('err-' + step);
-        if (err) err.classList.toggle('visible', !ok);
+        if (err) {
+          if (step === '6' && step6Missing.length) {
+            err.textContent = 'Please ' + step6Missing.join(' and ') + '.';
+          }
+          err.classList.toggle('visible', !ok);
+        }
         return ok;
       }
 
@@ -677,15 +684,22 @@ import SiteNav from '../components/SiteNav.astro';
           sigHasInk = false;
         }
       };
-      SignaturePad.prototype._point = function (this: any, e: any) {
+      SignaturePad.prototype._point = function (this: any, e: PointerEvent) {
         var rect = this.canvas.getBoundingClientRect();
-        var t = e.touches && e.touches[0] ? e.touches[0] : (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0] : e);
-        return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
       };
+      // Pointer Events (not separate mouse/touch listeners) so this works
+      // uniformly for finger, mouse AND active styluses (e.g. Samsung S Pen)
+      // - some devices dispatch stylus input only as pointer events, so
+      // touch-only handling can silently draw nothing.
       SignaturePad.prototype._bind = function (this: any) {
         var self = this;
-        function start(e: any) { e.preventDefault(); self.drawing = true; self.last = self._point(e); sigHasInk = true; }
-        function move(e: any) {
+        function start(e: PointerEvent) {
+          e.preventDefault();
+          self.canvas.setPointerCapture(e.pointerId);
+          self.drawing = true; self.last = self._point(e); sigHasInk = true;
+        }
+        function move(e: PointerEvent) {
           if (!self.drawing) return;
           e.preventDefault();
           var p = self._point(e);
@@ -696,14 +710,10 @@ import SiteNav from '../components/SiteNav.astro';
           self.last = p;
         }
         function end() { if (self.drawing) { self.drawing = false; save(); } }
-        this.canvas.addEventListener('mousedown', start);
-        this.canvas.addEventListener('mousemove', move);
-        this.canvas.addEventListener('mouseup', end);
-        this.canvas.addEventListener('mouseleave', end);
-        this.canvas.addEventListener('touchstart', start, { passive: false });
-        this.canvas.addEventListener('touchmove', move, { passive: false });
-        this.canvas.addEventListener('touchend', end);
-        this.canvas.addEventListener('touchcancel', end);
+        this.canvas.addEventListener('pointerdown', start);
+        this.canvas.addEventListener('pointermove', move);
+        this.canvas.addEventListener('pointerup', end);
+        this.canvas.addEventListener('pointercancel', end);
       };
       SignaturePad.prototype.clear = function (this: any) {
         this.ctx.fillStyle = '#FFFFFF';
@@ -736,7 +746,13 @@ import SiteNav from '../components/SiteNav.astro';
 
       function handleSubmit(e: Event) {
         e.preventDefault();
-        if (!validateStep('6')) return;
+        if (!validateStep('6')) {
+          // A validation failure that just toggles a small paragraph is
+          // easy to miss on mobile and can look like the button did nothing.
+          var errEl = document.getElementById('err-6');
+          if (errEl) errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
         var btn = $('#btn-submit') as HTMLButtonElement;
         btn.disabled = true;
         btn.textContent = 'Submitting...';

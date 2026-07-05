@@ -259,14 +259,21 @@ const parqText = [
             if (!h || !h.value) ok = false;
           }
         }
+        var missing: string[] = [];
         if (step === '3') {
-          if (!($('#pti-agree') as HTMLInputElement).checked) ok = false;
-          if (!(($('#pti-sig-name') as HTMLInputElement).value.trim())) ok = false;
-          if (!(($('#pti-sig-date') as HTMLInputElement).value.trim())) ok = false;
-          if (!sigHasInk) ok = false;
+          if (!($('#pti-agree') as HTMLInputElement).checked) missing.push('tick the agreement checkbox');
+          if (!(($('#pti-sig-name') as HTMLInputElement).value.trim())) missing.push('add your full name');
+          if (!(($('#pti-sig-date') as HTMLInputElement).value.trim())) missing.push('add the date');
+          if (!sigHasInk) missing.push('draw your signature');
+          if (missing.length) ok = false;
         }
         var err = document.getElementById('pti-err-' + step);
-        if (err) err.classList.toggle('visible', !ok);
+        if (err) {
+          if (step === '3' && missing.length) {
+            err.textContent = 'Please ' + missing.join(', ') + ' before submitting.';
+          }
+          err.classList.toggle('visible', !ok);
+        }
         return ok;
       }
 
@@ -298,13 +305,20 @@ const parqText = [
           }
         }
         sigResize = resize;
-        function point(e: any) {
+        function point(e: PointerEvent) {
           var rect = sigCanvas.getBoundingClientRect();
-          var t = e.touches && e.touches[0] ? e.touches[0] : e;
-          return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+          return { x: e.clientX - rect.left, y: e.clientY - rect.top };
         }
-        function start(e: any) { e.preventDefault(); sigDrawing = true; sigLast = point(e); sigHasInk = true; }
-        function move(e: any) {
+        // Pointer Events (not separate mouse/touch listeners) so this
+        // works uniformly for finger, mouse AND active styluses (e.g.
+        // Samsung S Pen) - some devices dispatch stylus input only as
+        // pointer events, so touch-only handling can silently draw nothing.
+        function start(e: PointerEvent) {
+          e.preventDefault();
+          sigCanvas.setPointerCapture(e.pointerId);
+          sigDrawing = true; sigLast = point(e); sigHasInk = true;
+        }
+        function move(e: PointerEvent) {
           if (!sigDrawing || !sigLast) return;
           e.preventDefault();
           var p = point(e);
@@ -314,13 +328,10 @@ const parqText = [
         function end() { sigDrawing = false; }
         window.addEventListener('resize', resize);
         resize();
-        sigCanvas.addEventListener('mousedown', start);
-        sigCanvas.addEventListener('mousemove', move);
-        sigCanvas.addEventListener('mouseup', end);
-        sigCanvas.addEventListener('mouseleave', end);
-        sigCanvas.addEventListener('touchstart', start, { passive: false });
-        sigCanvas.addEventListener('touchmove', move, { passive: false });
-        sigCanvas.addEventListener('touchend', end);
+        sigCanvas.addEventListener('pointerdown', start);
+        sigCanvas.addEventListener('pointermove', move);
+        sigCanvas.addEventListener('pointerup', end);
+        sigCanvas.addEventListener('pointercancel', end);
 
         var clearBtn = $('#pti-clear-sig');
         if (clearBtn) clearBtn.addEventListener('click', () => {
@@ -340,7 +351,13 @@ const parqText = [
 
       function handleSubmit(e: Event) {
         e.preventDefault();
-        if (!validateStep('3')) return;
+        if (!validateStep('3')) {
+          // A validation failure that just toggles a small paragraph is
+          // easy to miss on mobile and can look like the button did nothing.
+          var errEl = document.getElementById('pti-err-3');
+          if (errEl) errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
         var btn = $('#pti-submit-btn') as HTMLButtonElement;
         btn.disabled = true;
         btn.textContent = 'Submitting...';
