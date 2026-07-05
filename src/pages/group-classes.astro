@@ -35,7 +35,9 @@ const structuredData = {
       @media (max-width: 900px) {
         [data-two] { grid-template-columns: 1fr !important; }
         [data-classcard] { grid-template-columns: 1fr !important; }
-        [data-bring] { grid-template-columns: 1fr 1fr !important; }
+        [data-bring] { grid-template-columns: 1fr !important; }
+        [data-bring] .bring-item { border-right: none !important; border-bottom: 1px solid #E6E6E6; padding: 20px 0 !important; }
+        [data-bring] .bring-item:last-child { border-bottom: none; }
       }
     </style>
   </Fragment>
@@ -103,9 +105,9 @@ const structuredData = {
         <span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#6B6B6B;margin-bottom:20px;">What to bring</span>
         <h2 style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-weight:400;font-size:clamp(30px,4vw,48px);line-height:1;margin:0 0 44px;max-width:560px;">Turn up with three things. I bring the rest.</h2>
         <div data-bring style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #0A0A0A;">
-          <div style="padding:28px 24px 28px 0;border-right:1px solid #E6E6E6;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">Trainers</span></div>
-          <div style="padding:28px 24px;border-right:1px solid #E6E6E6;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">Water</span></div>
-          <div style="padding:28px 0 28px 24px;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">A jacket if it's grim</span></div>
+          <div class="bring-item" style="padding:28px 24px 28px 0;border-right:1px solid #E6E6E6;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">Trainers</span></div>
+          <div class="bring-item" style="padding:28px 24px;border-right:1px solid #E6E6E6;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">Water</span></div>
+          <div class="bring-item" style="padding:28px 0 28px 24px;"><span style="font-family:'Kensington Compressed','Arial Narrow',sans-serif;font-size:34px;">A jacket if it's grim</span></div>
         </div>
         <p style="font-size:16px;color:#6B6B6B;margin:24px 0 0;">All the kit is provided. Just show up ready to move.</p>
       </div>

@@ -23,7 +23,7 @@ const { title, description, bg = '#0A0A0A', structuredData } = Astro.props;
   {structuredData && (
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   )}
-  <style>
+  <style is:global>
     @font-face {
       font-family: 'Kensington Compressed';
       src: url('/fonts/Kensington-CompressedRegular.woff2') format('woff2');
