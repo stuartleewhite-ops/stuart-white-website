@@ -5,7 +5,7 @@
 // when the 7-day trial ends, no separate scheduled job needed.
 const Stripe = require('stripe');
 
-const PRICE_ID = 'price_1Tpv3C7Aq3imi9AlYhmzCwCH'; // keep in sync with src/lib/site-config.ts
+const PRICE_ID = 'price_1TnbUW7Aq3imi9AlZW7vSTSs'; // LIVE MODE - keep in sync with src/lib/site-config.ts
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {

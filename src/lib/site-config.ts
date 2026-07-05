@@ -21,12 +21,10 @@ export const CLIENT_PORTAL_URL = 'https://my.ptdistinction.com';
 
 // Stripe: card is collected on /intake and saved via a 7-day-trial
 // subscription (Stripe auto-charges when the trial ends, no manual step).
-// TEST MODE values below. To go live: swap both for the pk_live_/price_
-// values from Stripe's live mode, and swap the STRIPE_SECRET_KEY Netlify
-// environment variable from its sk_test_ value to the sk_live_ one - the
-// secret key never lives in code.
-export const STRIPE_PUBLISHABLE_KEY = 'pk_test_51Tnanq7Aq3imi9Al8SuQs9YWXw8fyxc8hyj2BEwNe5BcICpnRHpbnfwYZYUbZQDP0sGLSgcmzJQvyinMWpUpCQFb00ihwS6YyI';
-export const STRIPE_PRICE_ID = 'price_1Tpv3C7Aq3imi9AlYhmzCwCH';
+// LIVE MODE values - real cards get charged. The secret key never lives
+// in code; it's the STRIPE_SECRET_KEY Netlify environment variable.
+export const STRIPE_PUBLISHABLE_KEY = 'pk_live_51Tnanq7Aq3imi9AlLowHFx7109eUHdiTrbIGb5C8tEhpTnkEQglTTKjahXjnp8FWOWQMcAICSYsxtec6VXoR16Xf00PFKvXe2u';
+export const STRIPE_PRICE_ID = 'price_1TnbUW7Aq3imi9AlZW7vSTSs';
 
 // Primary nav (flat, four links + one persistent CTA)
 export const NAV_LINKS = [
