@@ -23,3 +23,22 @@ The design medium is **HTML/CSS/JS** — these are prototypes, not production co
 - `README.md` — this file
 - `chats/` — conversation transcripts (read these!)
 - `project/` — the `Stuart White fitness coaching website` project files (HTML prototypes, assets, components)
+
+## Environment variables
+
+Set these in the Netlify dashboard (Site configuration → Environment variables). See `.env.example` for local reference; never commit a real `.env` file.
+
+| Variable | Used by | Notes |
+| --- | --- | --- |
+| `STRIPE_SECRET_KEY` | `netlify/functions/create-subscription.js` | Server-side only, never exposed to the browser. Live key in production, test key (`sk_test_...`) when testing locally. |
+
+The Stripe publishable key and Price ID are not secrets and are hardcoded in `src/lib/site-config.ts`.
+
+## Signup paths
+
+There are two intake routes, both rendering the shared `src/components/IntakeWizard.astro` wizard so they can't drift apart:
+
+- `/intake` — the public path, linked from the site. 7-day free trial, plan key `standard`.
+- `/start/founding` — an unlisted path, never linked from the site and excluded from the sitemap (`src/pages/sitemap.xml.ts`) and `robots.txt`. 28-day free trial, plan key `founding`. Share this URL privately.
+
+Both card-collection and the trial length are handled by `netlify/functions/create-subscription.js`, which maps the plan key to a trial length via a hardcoded table (`PLAN_TRIALS`) and rejects any unrecognised plan key with a 400. It never accepts a trial length from the client. The created subscription's metadata carries `trial_variant: "7day"` or `"28day"` for later segmentation in Stripe.

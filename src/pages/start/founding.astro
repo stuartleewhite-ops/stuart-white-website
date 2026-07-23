@@ -1,0 +1,8 @@
+---
+// Unlisted signup path with a 28-day trial instead of 7. Shared with /intake
+// via IntakeWizard so the two can't drift apart - only the `plan` prop
+// differs. Not linked from anywhere on the site; kept out of the sitemap and
+// disallowed in robots.txt (see astro.config.mjs and public/robots.txt).
+import IntakeWizard from '../../components/IntakeWizard.astro';
+---
+<IntakeWizard plan="founding" noindex={true} />

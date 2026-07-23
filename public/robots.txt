@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /start/founding
+
+Sitemap: https://www.stuart-white.co.uk/sitemap.xml
